@@ -1,9 +1,26 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
-public sealed interface System permits SystemBase {
-    void update();
+/**
+ * Handles behaviour for one type of `Component`.
+ */
+public abstract class System {
+    public System() {
+        SystemManager.getInstance().register(this);
+    }
 
-    void registerToComponent();
+    /**
+     * Apply behaviour for all entities registered to the component this
+     * system handles.
+     */
+    abstract void update();
 
-    void unregisterFromComponent();
+    /**
+     * Assign the given entity to the component this system handles.
+     */
+    abstract void assignToComponent(Entity entity);
+
+    /**
+     * Unassign the given entity from the component this system handles.
+     */
+    abstract void unassignFromComponent(Entity entity);
 }

@@ -1,6 +1,9 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
-public class GameManager {
+/**
+ * Handles all other managers.
+ */
+public final class GameManager {
     private static GameManager instance = new GameManager();
 
     private GameManager() {
@@ -13,6 +16,6 @@ public class GameManager {
     public void update() {
         SystemManager.getInstance().update();
 
-        EntityManager.getInstance().purgeEntities();
+        EntityManager.getInstance().cleanUpEntities();
     }
 }

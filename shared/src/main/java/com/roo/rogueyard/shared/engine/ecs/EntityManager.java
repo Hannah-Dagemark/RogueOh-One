@@ -3,6 +3,9 @@ package com.roo.rogueyard.shared.engine.ecs;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles creating, destroying or otherwise affecting entites.
+ */
 public final class EntityManager {
     private static EntityManager instance = new EntityManager();
 
@@ -12,7 +15,6 @@ public final class EntityManager {
     private boolean[] destroyed = new boolean[maxId];
 
     private List<Entity> markedForDestruction = new ArrayList<>();
-    private List<Component<?>> components = new ArrayList<>();
 
     private EntityManager() {
     }
@@ -21,6 +23,9 @@ public final class EntityManager {
         return instance;
     }
 
+    /**
+     * Returns an entity with the next free entity id.
+     */
     public Entity createEntity() {
         if (nextId > maxId) {
             throw new RuntimeException("Max entites reached");
@@ -29,6 +34,9 @@ public final class EntityManager {
         return new Entity(nextId++);
     }
 
+    /**
+     * Marks an entity for destruction upon calling `cleanUpEntities`.
+     */
     public void destroyEntity(Entity entity) {
         if (nextId < entity.id()) {
             throw new RuntimeException("Entity does not exist");
@@ -40,25 +48,27 @@ public final class EntityManager {
         }
     }
 
+    /**
+     * Returns if the given entity is marked for destruction or destroyed.
+     */
     public boolean existsEntity(Entity entity) {
         return !destroyed[entity.id()];
     }
 
     /**
-     * Remove all components for all entities marked for destruction.
+     * Removes all components for all entities marked for destruction.
      */
-    public void purgeEntities() {
+    public void cleanUpEntities() {
         for (var entity : markedForDestruction) {
-            for (var component : components) {
-                component.entities.remove(entity.id());
-            }
+            ComponentManager.getInstance().unassignFromAll(entity);
         }
 
         markedForDestruction.clear();
     }
 
     /**
-     * Remove all entities and their components.
+     * Removes all entities and their components and resets the next free id
+     * to 0.
      */
     public void clearEntities() {
         for (int i = 0; i < nextId; i++) {
@@ -68,13 +78,9 @@ public final class EntityManager {
             }
         }
 
-        purgeEntities();
+        cleanUpEntities();
 
         nextId = 0;
         destroyed = new boolean[maxId];
-    }
-
-    public void registerComponent(Component<?> component) {
-        components.add(component);
     }
 }

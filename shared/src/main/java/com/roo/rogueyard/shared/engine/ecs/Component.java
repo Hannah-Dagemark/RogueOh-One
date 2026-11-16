@@ -2,9 +2,12 @@ package com.roo.rogueyard.shared.engine.ecs;
 
 import java.util.HashMap;
 
-abstract class Component<T> {
+/**
+ * Represents data that an entity can be assigned to.
+ */
+public abstract class Component<T> {
     public Component() {
-        EntityManager.getInstance().registerComponent(this);
+        ComponentManager.getInstance().register(this);
     }
 
     public HashMap<Integer, T> entities;
