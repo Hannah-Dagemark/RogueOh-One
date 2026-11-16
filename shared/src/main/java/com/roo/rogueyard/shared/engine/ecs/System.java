@@ -1,7 +1,8 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
 /**
- * Handles behaviour for one type of `Component`.
+ * Handles behaviour for one type of `Component`. T needs to be the same as T
+ * in the systems respective component.
  */
 public abstract class System<T> {
     public System() {
