@@ -1,3 +1,7 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
-abstract class Component {}
+import java.util.HashMap;
+
+abstract class Component<T> {
+    HashMap<Integer, T> entities;
+}
