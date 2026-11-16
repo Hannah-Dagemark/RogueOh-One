@@ -1,12 +1,12 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.roo.rogueyard.shared.engine.utils.Singleton;
+public final class EntityManager {
+    private static EntityManager instance = new EntityManager();
 
-public final class EntityManager extends Singleton {
-    private final int maxId = 16777216;
+    private final int maxId = 16777216; // 2^24
 
     private int nextId = 0;
     private boolean[] destroyed = new boolean[maxId];
@@ -14,10 +14,14 @@ public final class EntityManager extends Singleton {
     private List<Entity> markedForDestruction = new ArrayList<>();
     private List<Component<?>> components = new ArrayList<>();
 
-    public EntityManager() {
+    private EntityManager() {
     }
 
-    public Entity CreateEntity() {
+    public static EntityManager getInstance() {
+        return instance;
+    }
+
+    public Entity createEntity() {
         if (nextId > maxId) {
             throw new RuntimeException("Max entites reached");
         }
@@ -25,7 +29,7 @@ public final class EntityManager extends Singleton {
         return new Entity(nextId++);
     }
 
-    public void DestroyEntity(Entity entity) {
+    public void destroyEntity(Entity entity) {
         if (nextId < entity.id()) {
             throw new RuntimeException("Entity does not exist");
         }
@@ -36,15 +40,41 @@ public final class EntityManager extends Singleton {
         }
     }
 
-    public void PurgeEntitiesMarkedForDestruction() {
+    public boolean existsEntity(Entity entity) {
+        return !destroyed[entity.id()];
+    }
+
+    /**
+     * Remove all components for all entities marked for destruction.
+     */
+    public void purgeEntities() {
         for (var entity : markedForDestruction) {
             for (var component : components) {
                 component.entities.remove(entity.id());
             }
         }
+
+        markedForDestruction.clear();
     }
 
-    public boolean EntityExists(Entity entity) {
-        return !destroyed[entity.id()];
+    /**
+     * Remove all entities and their components.
+     */
+    public void clearEntities() {
+        for (int i = 0; i < nextId; i++) {
+            var entity = new Entity(i);
+            if (existsEntity(entity)) {
+                destroyEntity(entity);
+            }
+        }
+
+        purgeEntities();
+
+        nextId = 0;
+        destroyed = new boolean[maxId];
+    }
+
+    public void registerComponent(Component<?> component) {
+        components.add(component);
     }
 }

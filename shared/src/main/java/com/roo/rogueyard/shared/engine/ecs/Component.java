@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 abstract class Component<T> {
     public Component() {
-        EntityManager.getInstance().RegisterComponent(this);
+        EntityManager.getInstance().registerComponent(this);
     }
 
     public HashMap<Integer, T> entities;
