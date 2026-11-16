@@ -3,7 +3,7 @@ package com.roo.rogueyard.shared.engine.ecs;
 /**
  * Handles behaviour for one type of `Component`.
  */
-public abstract class System {
+public abstract class System<T> {
     public System() {
         SystemManager.getInstance().register(this);
     }
@@ -17,7 +17,7 @@ public abstract class System {
     /**
      * Assign the given entity to the component this system handles.
      */
-    abstract void assignToComponent(Entity entity);
+    abstract void assignToComponent(Entity entity, T data);
 
     /**
      * Unassign the given entity from the component this system handles.
