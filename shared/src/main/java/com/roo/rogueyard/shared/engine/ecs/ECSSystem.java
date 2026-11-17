@@ -14,18 +14,31 @@ public abstract class ECSSystem<T> {
     public HashMap<Integer, T> components;
 
     /**
+     * The action applied to every component.
+     */
+    protected abstract void updateSingle(Integer id, T data);
+
+    /**
      * Apply behaviour for all entities registered to the component this
      * system handles.
      */
-    abstract void update();
+    public void update() {
+        for (var entry : components.entrySet()) {
+            updateSingle(entry.getKey(), entry.getValue());
+        }
+    }
 
     /**
      * Assign the given entity to the component this system handles.
      */
-    abstract void assignToComponent(Entity entity, T data);
+    public void assignToComponent(Entity entity, T data) {
+        components.put(entity.id(), data);
+    }
 
     /**
      * Unassign the given entity from the component this system handles.
      */
-    abstract void unassignFromComponent(Entity entity);
+    public void unassignFromComponent(Entity entity) {
+        components.remove(entity.id());
+    }
 }
