@@ -1,7 +1,7 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
 /**
- * Represents an ECS entity. Has no state on it's own but can be assigned to
+ * Represents an ECS entity. Has no state on it's own but can be added to
  * components which hold their respective part of the total state.
  */
 public final class Entity {

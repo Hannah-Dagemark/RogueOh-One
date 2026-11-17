@@ -7,7 +7,7 @@ import java.util.List;
  * Handles creating, destroying or otherwise affecting entites.
  */
 public final class EntityManager {
-    private static EntityManager instance = new EntityManager();
+    private static final EntityManager instance = new EntityManager();
 
     private final int maxId = 16777216; // 2^24
 
@@ -60,7 +60,7 @@ public final class EntityManager {
      */
     public void cleanUpEntities() {
         for (var entity : markedForDestruction) {
-            SystemManager.getInstance().unassignFromAll(entity);
+            ComponentManager.getInstance().removeAllComponents(entity);
         }
 
         markedForDestruction.clear();
