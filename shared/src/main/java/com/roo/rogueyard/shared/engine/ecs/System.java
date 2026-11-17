@@ -1,13 +1,17 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
+import java.util.HashMap;
+
 /**
- * Handles behaviour for one type of `Component`. T needs to be the same as T
+ * Handles behaviour for one type of component. T needs to be the same as T
  * in the systems respective component.
  */
 public abstract class System<T> {
     public System() {
         SystemManager.getInstance().register(this);
     }
+
+    public HashMap<Integer, T> components;
 
     /**
      * Apply behaviour for all entities registered to the component this
