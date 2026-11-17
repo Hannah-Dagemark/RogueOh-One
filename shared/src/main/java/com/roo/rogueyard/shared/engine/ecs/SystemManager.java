@@ -9,7 +9,7 @@ import java.util.List;
 public final class SystemManager {
     private static SystemManager instance = new SystemManager();
 
-    private final List<System<?>> systems = new ArrayList<>();
+    private final List<ECSSystem<?>> systems = new ArrayList<>();
 
     private SystemManager() {
     }
@@ -21,7 +21,7 @@ public final class SystemManager {
     /**
      * Registers a system to this manager.
      */
-    public void register(System<?> system) {
+    public void register(ECSSystem<?> system) {
         systems.add(system);
     }
 

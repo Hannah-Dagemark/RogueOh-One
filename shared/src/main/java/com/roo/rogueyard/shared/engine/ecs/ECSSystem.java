@@ -6,8 +6,8 @@ import java.util.HashMap;
  * Handles behaviour for one type of component. T needs to be the same as T
  * in the systems respective component.
  */
-public abstract class System<T> {
-    public System() {
+public abstract class ECSSystem<T> {
+    public ECSSystem() {
         SystemManager.getInstance().register(this);
     }
 
