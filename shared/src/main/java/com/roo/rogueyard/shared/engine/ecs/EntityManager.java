@@ -1,6 +1,9 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
+import com.roo.rogueyard.shared.engine.ecs.entities.Entity;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,7 +19,20 @@ public final class EntityManager {
 
     private List<Entity> markedForDestruction = new ArrayList<>();
 
+    private HashMap<Integer, Entity> idEntityMap = new HashMap<>();
+
     private EntityManager() {
+    }
+
+    public Entity getEntity(Integer id) {
+        return idEntityMap.getOrDefault(id, new Entity(-1));
+    }
+
+    /**
+     * Registers an Entity to this manager.
+     */
+    public void register(Entity entity) {
+        idEntityMap.put(entity.id(), entity);
     }
 
     public static EntityManager getInstance() {

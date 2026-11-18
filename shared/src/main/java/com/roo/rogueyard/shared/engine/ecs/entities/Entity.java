@@ -1,14 +1,17 @@
-package com.roo.rogueyard.shared.engine.ecs;
+package com.roo.rogueyard.shared.engine.ecs.entities;
+
+import com.roo.rogueyard.shared.engine.ecs.EntityManager;
 
 /**
  * Represents an ECS entity. Has no state on it's own but can be assigned to
  * components which hold their respective part of the total state.
  */
-public final class Entity {
+public class Entity {
     private final int id;
 
     public Entity(int id) {
         this.id = id;
+        EntityManager.getInstance().register(this);
     }
 
     /**

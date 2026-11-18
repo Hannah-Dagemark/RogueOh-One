@@ -1,5 +1,7 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
+import com.roo.rogueyard.shared.engine.ecs.entities.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
