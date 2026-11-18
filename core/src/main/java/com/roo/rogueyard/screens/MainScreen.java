@@ -7,6 +7,10 @@ import com.roo.rogueyard.GameView;
 import com.roo.rogueyard.shared.game.GameModel;
 import com.roo.rogueyard.shared.game.event.CreateVisualEvent;
 
+/**
+ * The main screen where the game is played. Acts as the controller part of
+ * MVC.
+ */
 public class MainScreen extends BaseScreen {
     GameModel gameModel;
     GameView gameView;

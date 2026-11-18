@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * The view part of MVC.
+ */
 public class GameView {
     private final SpriteBatch batch;
     private final GameRenderableFactory renderableFactory;
