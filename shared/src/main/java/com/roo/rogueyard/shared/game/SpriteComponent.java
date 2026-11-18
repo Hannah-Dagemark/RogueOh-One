@@ -1,6 +1,6 @@
 package com.roo.rogueyard.shared.game;
 
-import com.badlogic.gdx.graphics.Sprite;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.roo.rogueyard.shared.engine.ecs.Component;
 
 public class SpriteComponent implements Component {

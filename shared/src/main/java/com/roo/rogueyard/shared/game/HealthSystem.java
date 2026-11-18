@@ -2,10 +2,15 @@ package com.roo.rogueyard.shared.game;
 
 import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.event.GameEventBus;
 
 public class HealthSystem extends ECSSystemSingle<HealthComponent> {
-    public HealthSystem() {
+    private GameEventBus eventBus;
+
+    public HealthSystem(GameEventBus eventBus) {
         super(HealthComponent.class);
+
+        this.eventBus = eventBus;
     }
 
     @Override

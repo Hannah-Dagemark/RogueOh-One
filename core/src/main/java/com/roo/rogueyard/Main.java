@@ -1,7 +1,6 @@
 package com.roo.rogueyard;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.roo.rogueyard.screens.MainMenu;
 
 /**
