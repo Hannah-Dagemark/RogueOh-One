@@ -1,6 +1,5 @@
 package com.roo.rogueyard.shared.game;
 
-import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.engine.ecs.EntityManager;
 
@@ -12,7 +11,7 @@ public final class PlayerFactory {
 
     public static Entity createPlayer() {
         Entity player = EntityManager.getInstance().createEntity();
-        ComponentManager.getInstance().addComponent(player, new HealthComponent(playerMaxHealth));
+        player.addComponent(new HealthComponent(playerMaxHealth));
         return player;
     }
 }

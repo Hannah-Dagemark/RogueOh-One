@@ -1,12 +1,15 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class ComponentManager {
     private static final ComponentManager instance = new ComponentManager();
 
-    private final Map<Class<? extends Component>, Map<Integer, Component>> componentMaps = new HashMap<>();
+    private final Map<Class<? extends Component>, Map<Entity, Component>> componentMaps = new HashMap<>();
+    private final List<ComponentListener> componentListeners = new ArrayList<>();
 
     private ComponentManager() {
     }
@@ -24,22 +27,30 @@ public final class ComponentManager {
     }
 
     /**
+     * Adds the given listener to the ones that are notified whenever a
+     * component has been added.
+     */
+    public void addComponentListener(ComponentListener componentListener) {
+        componentListeners.add(componentListener);
+    }
+
+    /**
      * Returns the map from entity to component for the given component type.
      */
     @SuppressWarnings("unchecked")
-    public <T extends Component> Map<Integer, T> getComponentsMap(Class<T> componentType) {
+    public <T extends Component> Map<Entity, T> getComponentsMap(Class<T> componentType) {
         var components = componentMaps.get(componentType);
         if (components == null) {
             throw new RuntimeException("componentType is not registered as a component.");
         }
-        return (Map<Integer, T>) components;
+        return (Map<Entity, T>) components;
     }
 
     /**
      * Returns the component of the specified entity and type.
      */
     public <T extends Component> T getComponent(Entity entity, Class<T> componentType) {
-        return getComponentsMap(componentType).get(entity.id());
+        return getComponentsMap(componentType).get(entity);
     }
 
     /**
@@ -47,14 +58,18 @@ public final class ComponentManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends Component> void addComponent(Entity entity, T component) {
-        ((Map<Integer, T>) getComponentsMap(component.getClass())).put(entity.id(), component);
+        ((Map<Entity, T>) getComponentsMap(component.getClass())).put(entity, component);
+
+        for (var componentListener : componentListeners) {
+            componentListener.onComponentAdded(entity, component.getClass(), component);
+        }
     }
 
     /**
      * Removes the specified component from the specified entity.
      */
-    public <T extends Component> void removeComponent(Entity entity, Class<T> type) {
-        getComponentsMap(type).remove(entity.id());
+    public <T extends Component> void removeComponent(Entity entity, Class<T> componentType) {
+        getComponentsMap(componentType).remove(entity);
     }
 
     /**
@@ -62,7 +77,7 @@ public final class ComponentManager {
      */
     public void removeAllComponents(Entity entity) {
         for (var components : componentMaps.values()) {
-            components.remove(entity.id());
+            components.remove(entity);
         }
     }
 }

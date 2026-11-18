@@ -60,7 +60,7 @@ public final class EntityManager {
      */
     public void cleanUpEntities() {
         for (var entity : markedForDestruction) {
-            ComponentManager.getInstance().removeAllComponents(entity);
+            entity.removeAllComponents();
         }
 
         markedForDestruction.clear();
