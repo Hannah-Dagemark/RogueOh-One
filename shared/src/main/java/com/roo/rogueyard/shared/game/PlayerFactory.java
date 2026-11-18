@@ -15,6 +15,10 @@ public final class PlayerFactory {
         player.addComponent(new HealthComponent(playerMaxHealth));
         player.addComponent(new TransformComponent(new Vector2(0, 0), new Vector2(1, 1), 0));
         player.addComponent(new VisualComponent(VisualType.PLAYER, true));
+
+        // TODO: Create body for player
+        player.addComponent(new PhysicsBodyComponent(null));
+
         return player;
     }
 }

@@ -35,6 +35,7 @@ public final class GameModel {
         // Order here is the order systems are executed in.
         new HealthSystem();
         new VisualSystem(eventBus);
+        new PhysicsSystem();
     }
 
     public GameEventBus getEventBus() {

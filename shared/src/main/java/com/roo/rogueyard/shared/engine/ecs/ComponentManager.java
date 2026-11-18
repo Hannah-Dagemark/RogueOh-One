@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles actions upon components.
+ */
 public final class ComponentManager {
     private static final ComponentManager instance = new ComponentManager();
 
