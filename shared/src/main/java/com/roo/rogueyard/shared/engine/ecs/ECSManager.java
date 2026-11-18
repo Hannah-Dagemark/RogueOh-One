@@ -31,6 +31,7 @@ public final class ECSManager {
     }
 
     public void update(float deltaTime) {
+        this.deltaTime = deltaTime;
         elapsedTime += deltaTime;
 
         SystemManager.getInstance().update();

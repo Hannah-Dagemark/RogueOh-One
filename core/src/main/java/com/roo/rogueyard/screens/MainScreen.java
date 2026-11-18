@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.roo.rogueyard.GameView;
 import com.roo.rogueyard.shared.game.GameModel;
+import com.roo.rogueyard.shared.game.event.CreateVisualEvent;
 
 public class MainScreen extends BaseScreen {
     GameModel gameModel;
@@ -17,7 +18,11 @@ public class MainScreen extends BaseScreen {
     @Override
     public void show() {
         gameModel = new GameModel();
-        gameView = new GameView();
+        gameView = new GameView(gameModel);
+
+        gameModel.getEventBus().subscribe(
+                CreateVisualEvent.class,
+                gameView.createVisualListener);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.roo.rogueyard.shared.game;
 
+import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
@@ -8,14 +9,23 @@ import com.roo.rogueyard.shared.game.event.GameEventBus;
  * Holds the game state.
  */
 public final class GameModel {
-    private GameEventBus eventBus;
+    private final GameEventBus eventBus = new GameEventBus();
 
     private Entity player;
 
     public GameModel() {
+        initComponents();
         initSystems();
 
         player = PlayerFactory.createPlayer();
+    }
+
+    /**
+     * Sets up all ECS components that don't have a primary system that
+     * initializes them.
+     */
+    private void initComponents() {
+        ComponentManager.getInstance().registerComponent(TransformComponent.class);
     }
 
     /**
@@ -23,7 +33,8 @@ public final class GameModel {
      */
     private void initSystems() {
         // Order here is the order systems are executed in.
-        new HealthSystem(eventBus);
+        new HealthSystem();
+        new VisualSystem(eventBus);
     }
 
     public GameEventBus getEventBus() {

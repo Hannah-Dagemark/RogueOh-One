@@ -1,22 +1,44 @@
 package com.roo.rogueyard;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.roo.rogueyard.render.GameRenderable;
+import com.roo.rogueyard.render.GameRenderableFactory;
+import com.roo.rogueyard.shared.game.GameModel;
+import com.roo.rogueyard.shared.game.event.CreateVisualEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class GameView {
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
+    private final GameRenderableFactory renderableFactory;
 
-    public GameView() {
+    private final List<GameRenderable> renderables = new ArrayList<>();
+
+    public final Consumer<CreateVisualEvent> createVisualListener = this::onCreateVisualEvent;
+
+    public GameView(GameModel model) {
         batch = new SpriteBatch();
+        renderableFactory = new GameRenderableFactory();
     }
 
     public void render(float deltaTime) {
         batch.begin();
-        // batch.draw(image, 140, 210);
+        for (var renderable : renderables) {
+            renderable.draw(batch);
+        }
         batch.end();
     }
 
+    private void onCreateVisualEvent(CreateVisualEvent event) {
+        renderables.add(renderableFactory.fromVisualComponent(
+                event.visualComponent(),
+                event.entity()));
+    }
+
     public void dispose() {
+        renderableFactory.dispose();
         batch.dispose();
     }
 }
