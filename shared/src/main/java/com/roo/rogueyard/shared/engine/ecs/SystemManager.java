@@ -7,9 +7,9 @@ import java.util.List;
  * Handles actions that affect all systems.
  */
 public final class SystemManager {
-    private static SystemManager instance = new SystemManager();
+    private static final SystemManager instance = new SystemManager();
 
-    private final List<ECSSystem<?>> systems = new ArrayList<>();
+    private final List<ECSSystem> systems = new ArrayList<>();
 
     private SystemManager() {
     }
@@ -21,7 +21,7 @@ public final class SystemManager {
     /**
      * Registers a system to this manager.
      */
-    public void register(ECSSystem<?> system) {
+    public void register(ECSSystem system) {
         systems.add(system);
     }
 
@@ -31,15 +31,6 @@ public final class SystemManager {
     public void update() {
         for (var system : systems) {
             system.update();
-        }
-    }
-
-    /**
-     * Unassigns an entity from all systems.
-     */
-    public void unassignFromAll(Entity entity) {
-        for (var system : systems) {
-            system.components.remove(entity.id());
         }
     }
 }
