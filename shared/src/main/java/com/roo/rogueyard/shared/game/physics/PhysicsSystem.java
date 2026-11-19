@@ -1,4 +1,4 @@
-package com.roo.rogueyard.shared.game;
+package com.roo.rogueyard.shared.game.physics;
 
 import com.roo.rogueyard.shared.engine.ecs.ComponentListener;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;

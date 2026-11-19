@@ -1,4 +1,4 @@
-package com.roo.rogueyard.shared.game;
+package com.roo.rogueyard.shared.game.physics;
 
 import java.util.List;
 

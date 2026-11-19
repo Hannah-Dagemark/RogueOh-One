@@ -1,8 +1,13 @@
-package com.roo.rogueyard.shared.game;
+package com.roo.rogueyard.shared.game.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.engine.ecs.EntityManager;
+import com.roo.rogueyard.shared.game.HealthComponent;
+import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.VisualComponent;
+import com.roo.rogueyard.shared.game.VisualType;
+import com.roo.rogueyard.shared.game.physics.PhysicsBodyComponent;
 
 /**
  * Handles creating players.
