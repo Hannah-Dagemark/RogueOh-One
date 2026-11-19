@@ -5,6 +5,7 @@ import java.util.List;
 import com.roo.rogueyard.shared.engine.ecs.Component;
 import com.roo.rogueyard.shared.engine.ecs.ComponentWithRequirements;
 import com.roo.rogueyard.shared.engine.ecs.RequiredComponentsBuilder;
+import com.roo.rogueyard.shared.game.physics.TransformComponent;
 
 /**
  * Holds the data required to select a sprite for this entity inside view.

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.badlogic.gdx.math.Vector2;
-import com.roo.rogueyard.shared.game.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
 
