@@ -73,6 +73,12 @@ public final class ComponentManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends Component> void addComponent(Entity entity, T component) {
+        if (entity.getComponent(component.getClass()) != null) {
+            throw new RuntimeException(
+                    "Added component %s to entity but it already exists."
+                            .formatted(component.getClass().getName()));
+        }
+
         if (component instanceof ComponentWithRequirements componentWithRequirements) {
             var checkResult = hasRequiredComponents(entity, componentWithRequirements);
             if (!checkResult.hasAllRequired()) {

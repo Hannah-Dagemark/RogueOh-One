@@ -18,7 +18,7 @@ public final class PlayerFactory {
      */
     public static Entity createPlayer() {
         Entity player = EntityManager.getInstance().createEntity();
-        // player.addComponent(new TransformComponent(new Vector2(0, 0)));
+        player.addComponent(new TransformComponent(new Vector2(0, 0)));
         player.addComponent(new HealthComponent(playerMaxHealth));
         player.addComponent(new VisualComponent(VisualType.PLAYER, true));
 

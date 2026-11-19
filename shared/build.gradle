@@ -1,6 +1,7 @@
 eclipse.project.name = appName + '-shared'
 
 dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter:6.2.0-M1'
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
 }
