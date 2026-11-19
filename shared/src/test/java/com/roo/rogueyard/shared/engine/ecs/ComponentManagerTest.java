@@ -2,6 +2,7 @@ package com.roo.rogueyard.shared.engine.ecs;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +11,15 @@ import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
 
 class ComponentManagerTest {
+    @BeforeEach
+    void setUp() {
+        EntityManager.getInstance().clearEntities();
+
+        var componentManager = ComponentManager.getInstance();
+        componentManager.registerComponent(TransformComponent.class);
+        componentManager.registerComponent(VisualComponent.class);
+    }
+
     @Test
     void testAddSameComponent() {
         var entity = EntityManager.getInstance().createEntity();
