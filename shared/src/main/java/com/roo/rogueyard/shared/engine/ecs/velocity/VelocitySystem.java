@@ -1,16 +1,16 @@
 package com.roo.rogueyard.shared.engine.ecs.velocity;
 
-import com.roo.rogueyard.shared.engine.ecs.ECSSystem;
-import com.roo.rogueyard.shared.engine.ecs.entities.Entity;
-import com.roo.rogueyard.shared.engine.ecs.EntityManager;
-import com.roo.rogueyard.shared.engine.positionable.Positionable;
+import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
+import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.TransformComponent;
 
-public class VelocitySystem extends ECSSystem<VelocityComponent> {
-    @Override
-    protected void updateSingle(Integer id, VelocityComponent data) {
-        Entity updateEntity = EntityManager.getInstance().getEntity(id);
-        if (updateEntity instanceof Positionable posEntity) {
-            posEntity.updatePosition(data.velocity);
+public class VelocitySystem extends ECSSystemSingle<VelocityComponent> {
+        public VelocitySystem() {
+            super(VelocityComponent.class);
         }
+
+    @Override
+    protected void updateSingle(Entity entity, VelocityComponent component) {
+        entity.getComponent(TransformComponent.class).position.add(component.velocity);
     }
 }

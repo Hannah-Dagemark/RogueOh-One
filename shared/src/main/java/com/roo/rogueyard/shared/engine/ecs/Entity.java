@@ -1,6 +1,4 @@
-package com.roo.rogueyard.shared.engine.ecs.entities;
-
-import com.roo.rogueyard.shared.engine.ecs.EntityManager;
+package com.roo.rogueyard.shared.engine.ecs;
 
 /**
  * Represents an ECS entity. Has no state on it's own but can be added to
