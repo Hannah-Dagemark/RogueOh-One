@@ -4,3 +4,7 @@ dependencies {
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
 }
+
+test {
+  useJUnitPlatform()
+}

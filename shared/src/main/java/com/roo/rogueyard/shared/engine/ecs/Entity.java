@@ -1,5 +1,7 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
+import java.util.List;
+
 /**
  * Represents an ECS entity. Has no state on it's own but can be added to
  * components which hold their respective part of the total state.
@@ -19,7 +21,8 @@ public final class Entity {
     }
 
     /**
-     * Returns the component of the specified entity and type.
+     * Returns the component of the given type if it exists on this entity,
+     * otherwise null.
      * More intuitive helper method instead of using `ComponentManager`.
      */
     public <T extends Component> T getComponent(Class<T> componentType) {
@@ -27,7 +30,15 @@ public final class Entity {
     }
 
     /**
-     * Adds the specified component to the specified entity.
+     * Returns all components attached to this entity.
+     * More intuitive helper method instead of using `ComponentManager`.
+     */
+    public List<? extends Component> getAllComponents() {
+        return ComponentManager.getInstance().getAllComponents(this);
+    }
+
+    /**
+     * Adds the specified component to this entity.
      * More intuitive helper method instead of using `ComponentManager`.
      */
     public <T extends Component> void addComponent(T component) {
@@ -35,7 +46,7 @@ public final class Entity {
     }
 
     /**
-     * Removes the specified component from the specified entity.
+     * Removes the specified component from this entity.
      * More intuitive helper method instead of using `ComponentManager`.
      */
     public <T extends Component> void removeComponent(Class<T> componentType) {
@@ -43,7 +54,7 @@ public final class Entity {
     }
 
     /**
-     * Removes all components from the specified entity.
+     * Removes all components from this entity.
      * More intuitive helper method instead of using `ComponentManager`.
      */
     public void removeAllComponents() {
