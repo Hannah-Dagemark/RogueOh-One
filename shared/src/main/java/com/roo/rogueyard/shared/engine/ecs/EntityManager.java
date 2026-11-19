@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Handles creating, destroying or otherwise affecting entites.
+ * The manager which handles creating, destroying or otherwise affecting entities.
  */
 public final class EntityManager {
     private static final EntityManager instance = new EntityManager();
@@ -22,6 +22,9 @@ public final class EntityManager {
     private EntityManager() {
     }
 
+    /**
+     * If there is entity with id 'id', return that entity object. Otherwise, returns blank entity with error ID ( -1 ) :>
+     */
     public Entity getEntity(Integer id) {
         return idEntityMap.getOrDefault(id, new Entity(-1));
     }
@@ -33,6 +36,9 @@ public final class EntityManager {
         idEntityMap.put(entity.id(), entity);
     }
 
+    /**
+     * Returns the EntityManager instance
+     */
     public static EntityManager getInstance() {
         return instance;
     }
@@ -42,7 +48,7 @@ public final class EntityManager {
      */
     public Entity createEntity() {
         if (nextId > maxId) {
-            throw new RuntimeException("Max entites reached");
+            throw new RuntimeException("Max entities reached");
         }
 
         return new Entity(nextId++);
