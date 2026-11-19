@@ -1,10 +1,11 @@
 package com.roo.rogueyard.shared.engine.ecs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Handles creating, destroying or otherwise affecting entites.
+ * The manager which handles creating, destroying or otherwise affecting entities.
  */
 public final class EntityManager {
     private static final EntityManager instance = new EntityManager();
@@ -16,9 +17,28 @@ public final class EntityManager {
 
     private List<Entity> markedForDestruction = new ArrayList<>();
 
+    private HashMap<Integer, Entity> idEntityMap = new HashMap<>();
+
     private EntityManager() {
     }
 
+    /**
+     * If there is entity with id 'id', return that entity object. Otherwise, returns blank entity with error ID ( -1 ) :>
+     */
+    public Entity getEntity(Integer id) {
+        return idEntityMap.getOrDefault(id, new Entity(-1));
+    }
+
+    /**
+     * Registers an Entity to this manager.
+     */
+    public void register(Entity entity) {
+        idEntityMap.put(entity.id(), entity);
+    }
+
+    /**
+     * Returns the EntityManager instance
+     */
     public static EntityManager getInstance() {
         return instance;
     }
@@ -28,7 +48,7 @@ public final class EntityManager {
      */
     public Entity createEntity() {
         if (nextId > maxId) {
-            throw new RuntimeException("Max entites reached");
+            throw new RuntimeException("Max entities reached");
         }
 
         return new Entity(nextId++);

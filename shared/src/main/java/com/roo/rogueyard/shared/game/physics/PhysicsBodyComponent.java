@@ -1,4 +1,4 @@
-package com.roo.rogueyard.shared.game;
+package com.roo.rogueyard.shared.game.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.roo.rogueyard.shared.engine.ecs.Component;

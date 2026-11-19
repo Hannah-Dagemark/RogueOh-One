@@ -3,7 +3,7 @@ package com.roo.rogueyard.render;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
-import com.roo.rogueyard.shared.game.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.TransformComponent;
 
 /**
  * Holds a sprite thats represents an entity. It keeps the sprite up to date
