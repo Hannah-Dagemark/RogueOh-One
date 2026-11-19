@@ -1,11 +1,16 @@
 package com.roo.rogueyard.shared.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
+import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
+import com.roo.rogueyard.shared.game.npc.ecs.HuntBehaviourSystem;
+import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 
 /**
@@ -15,12 +20,22 @@ public final class GameModel {
     private final GameEventBus eventBus = new GameEventBus();
 
     private Entity player;
+    private Entity[] enemies;
 
     public GameModel() {
         initComponents();
         initSystems();
+        initEntities();
+    }
 
+    private void initEntities() {
         player = PlayerFactory.createPlayer();
+        EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
+        enemies = new Entity[3];
+        for (int i = 0; i <= 2; i++) {
+            enemies[i] = enemyFactory.createNPC();
+            enemies[i].getComponent(TransformComponent.class).position.set(new Vector2(0,0).setToRandomDirection().scl(100));
+        }
     }
 
     /**
@@ -39,6 +54,9 @@ public final class GameModel {
         new HealthSystem();
         new VisualSystem(eventBus);
         new PhysicsSystem();
+        new TrackingBehaviourSystem();
+        new HuntBehaviourSystem();
+        new VelocitySystem();
     }
 
     /**
