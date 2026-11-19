@@ -7,7 +7,6 @@ import com.roo.rogueyard.shared.engine.ecs.Entity;
  * as ECS functions should be left to systems and components, which are attached in runtime using a factory / wrapper.
  */
 public class PlayerEntity extends Entity {
-
     public PlayerEntity(int id) {
         super(id);
     }
