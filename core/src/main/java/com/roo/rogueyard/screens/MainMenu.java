@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * The main menu screen.
+ */
 public class MainMenu extends BaseScreen {
     TextureRegion title;
     SpriteBatch batch;

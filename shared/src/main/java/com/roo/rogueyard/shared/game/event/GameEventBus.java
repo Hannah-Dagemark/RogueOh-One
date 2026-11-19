@@ -17,11 +17,17 @@ public class GameEventBus {
 
     private final Queue<GameEvent> pending = new ArrayDeque<>();
 
+    /**
+     * Start listening to events of type T.
+     */
     public <T extends GameEvent> void subscribe(Class<T> eventType, Consumer<T> listener) {
         listeners.computeIfAbsent(eventType, key -> new ArrayList<>())
                 .add(listener);
     }
 
+    /**
+     * Stop listening to events of type T.
+     */
     public <T extends GameEvent> void unsubscribe(Class<T> eventType, Consumer<T> listener) {
         List<Consumer<? extends GameEvent>> eventListeners = listeners.get(eventType);
         if (eventListeners != null) {
@@ -47,6 +53,9 @@ public class GameEventBus {
         }
     }
 
+    /**
+     * Delivers the given event to all listeners.
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void deliver(GameEvent event) {
         List<Consumer<? extends GameEvent>> eventListeners = listeners.get(event.getClass());
@@ -59,6 +68,9 @@ public class GameEventBus {
         }
     }
 
+    /**
+     * Clear the event bus of all listeners and queued events.
+     */
     public void clear() {
         listeners.clear();
         pending.clear();

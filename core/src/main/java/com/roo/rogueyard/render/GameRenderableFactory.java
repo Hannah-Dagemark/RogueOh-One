@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Creates objects with sprites.
+ * Creates GameRenderable objects.
  */
 public final class GameRenderableFactory {
     private final Map<String, Texture> textures = new HashMap<>();
@@ -23,6 +23,10 @@ public final class GameRenderableFactory {
         return new Texture(Gdx.files.internal("sprites/" + key + ".png"));
     }
 
+    /**
+     * Create a GameRenderable to represent a given VisualComponent belonging
+     * to the given entity.
+     */
     public GameRenderable fromVisualComponent(VisualComponent visual, Entity entity) {
         switch (visual.visualType) {
             case VisualType.PLAYER:
@@ -32,12 +36,15 @@ public final class GameRenderableFactory {
         }
     }
 
-    public GameRenderable createPlayer(VisualComponent visual, Entity entity) {
+    private GameRenderable createPlayer(VisualComponent visual, Entity entity) {
         var sprite = new Sprite(loadTexture("bulker"));
         sprite.setAlpha(visual.visible ? 1 : 0);
         return new GameRenderableEntity(sprite, entity);
     }
 
+    /**
+     * Free up the resources taken up by this class.
+     */
     public void dispose() {
         textures.values().forEach(Texture::dispose);
         textures.clear();

@@ -10,6 +10,5 @@ public class HealthSystem extends ECSSystemSingle<HealthComponent> {
 
     @Override
     protected void updateSingle(Entity entity, HealthComponent component) {
-        component.health = Math.max(0, component.health - 1);
     }
 }

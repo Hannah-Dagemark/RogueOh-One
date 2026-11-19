@@ -39,7 +39,6 @@ public class MainScreen extends BaseScreen {
 
     @Override
     public void hide() {
-        Gdx.app.debug("Cubocy", "dispose game screen");
         gameView.dispose();
     }
 }

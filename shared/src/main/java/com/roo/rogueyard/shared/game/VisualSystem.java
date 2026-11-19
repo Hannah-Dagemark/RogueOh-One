@@ -7,6 +7,9 @@ import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.event.CreateVisualEvent;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 
+/**
+ * Handles sending events to the GameView whenever a VisualComponent is added.
+ */
 public class VisualSystem extends ECSSystemSingle<VisualComponent> implements ComponentListener {
     private GameEventBus eventBus;
 
@@ -20,7 +23,6 @@ public class VisualSystem extends ECSSystemSingle<VisualComponent> implements Co
 
     @Override
     protected void updateSingle(Entity entity, VisualComponent visualComponent) {
-
     }
 
     @Override

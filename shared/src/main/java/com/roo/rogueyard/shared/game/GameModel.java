@@ -38,10 +38,17 @@ public final class GameModel {
         new PhysicsSystem();
     }
 
+    /**
+     * Returns the game event bus that can be used to send and recieve events
+     * from the GameModel to the GameView.
+     */
     public GameEventBus getEventBus() {
         return eventBus;
     }
 
+    /**
+     * Update the game state.
+     */
     public void update(float deltaTime) {
         ECSManager.getInstance().update(deltaTime);
         eventBus.dispatch();

@@ -26,6 +26,9 @@ public class GameView {
         renderableFactory = new GameRenderableFactory();
     }
 
+    /**
+     * Renders everything in the GameView.
+     */
     public void render(float deltaTime) {
         batch.begin();
         for (var renderable : renderables) {
@@ -34,12 +37,18 @@ public class GameView {
         batch.end();
     }
 
+    /**
+     * Handles CreateVisualEvent events.
+     */
     private void onCreateVisualEvent(CreateVisualEvent event) {
         renderables.add(renderableFactory.fromVisualComponent(
                 event.visualComponent(),
                 event.entity()));
     }
 
+    /**
+     * Free up the resources taken up by this class.
+     */
     public void dispose() {
         renderableFactory.dispose();
         batch.dispose();
