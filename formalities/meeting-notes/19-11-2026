@@ -1,0 +1,57 @@
+random generation is really fun but can also lead to ridiculous difficulty.
+Balance difficulty, not nice if youre either 
+
+olika typer av upgrades, max styrka kan nås snabbt men det finns många olika attributes att nå max på. 
+Klasser bör vara ospecifika, inte jättestor skillnad för att inte vissa 'encounters' ska bli orimligt svåra eller lätta.
+
+Feedback på huvudkaraktär:
+Han var lite goofy, han ska gå lite roligt. Ge honom personlighet.
+
+feedback på enemies:
+alla enemies ser inte helt onda eller goda ut så det kan vara oklart.
+
+feedback på levande värld.
+Folk gillar när saker kan interageras med och när kartans entities interagerar med varandra. t.ex. när enemies hoppar på fordon.
+
+Arvid: Allt borde kännas interactable
+
+Hannah: fiender använder också environment för att göra det svårare och mer varierat.
+
+Gör om till user stories och bestäm vad som är rimligt.
+
+ECS konvo med Niklas: mer förvirrade än innan men också lite direktiv om vad som ska göras. Har ECS gjort projektet mer komplicerat? 
+
+Viktigt att vi kommer överens om en grundläggande arkitektur för att undvika konflikter.
+
+Bra att reflektera över vad som fungerar bra och dåligt, notera problem som vi stöter på.
+
+Svårt att se om UML-koncepten fungerar innan det är implementerat i kod. 
+
+Hur mycket ska vara ECS jämfört med projektorienterat? 
+
+reflektera i slutrapport över defensiv programmering i relationen mellan view och model.
+
+imorrn fredag: bestämma mål för vecka 4, reflektera över vecka 3.
+
+hur mycket story har vi i spelet egentligen?
+
+Vi har atmosfären. 
+
+Det behöver inte nödvändigtvis finnas en story i början, spelaren kan hitta fler och fler ledtrådar till lore bakom spelet.
+Det är kul om saker man hittar inte bara ger svar men också nya frågor om vad för typ av värld man befinner sig i.
+
+user feedback: Kul om man kan se ut ur ett fönster. men varför är vår lilla robot 
+
+små element som ger lite ledtrådar, tidningsutklipp. 
+
+Man ska inte bara samla scrap för att det är ens uppdrag, det ska gynna dig genom att du kan uppgradera abilities och köpa coola saker.
+
+tänk på att ha något modulärt vi kan bygga på innan vi börjar koda förhastat.
+
+Tänk mer på hur user stories kopplas till issues. Allt i projektet ska egentligen utgå från user stories.
+
+User feedback har vid upprepade tillfällen krävt en story för spelet som gör det mer intressant och inlevelsefullt.
+
+Se till att vi har ett system där det är lätt att tweaka attribut så vi kan ombalansera.
+
+definition of done
