@@ -25,10 +25,10 @@ public class MainScreen extends BaseScreen {
         gameModel = new GameModel();
         gameView = new GameView(gameModel);
 
-        gameModel.getEventBus().subscribe(
+        gameModel.getExternalEventBus().subscribe(
                 CreateVisualEvent.class,
                 gameView.createVisualListener);
-        gameModel.getEventBus().subscribe(
+        gameModel.getExternalEventBus().subscribe(
                 DestroyVisualEvent.class,
                 gameView.destroyVisualListener);
     }
