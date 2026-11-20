@@ -50,10 +50,22 @@ public final class ComponentManager {
     }
 
     /**
-     * Returns the component of the specified entity and type.
+     * Returns the component of the given type if it exists on the given entity,
+     * otherwise null.
      */
     public <T extends Component> T getComponent(Entity entity, Class<T> componentType) {
         return getComponentsMap(componentType).get(entity);
+    }
+
+    /**
+     * Returns all components attached to the given entity.
+     */
+    public List<? extends Component> getAllComponents(Entity entity) {
+        var result = new ArrayList<Component>();
+        for (var components : componentMaps.values()) {
+            result.add(components.get(entity));
+        }
+        return result;
     }
 
     /**
@@ -61,6 +73,22 @@ public final class ComponentManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends Component> void addComponent(Entity entity, T component) {
+        if (entity.getComponent(component.getClass()) != null) {
+            throw new RuntimeException(
+                    "Added component %s to entity but it already exists."
+                            .formatted(component.getClass().getName()));
+        }
+
+        if (component instanceof ComponentWithRequirements componentWithRequirements) {
+            var checkResult = hasRequiredComponents(entity, componentWithRequirements);
+            if (!checkResult.hasAllRequired()) {
+                throw new RuntimeException(
+                        "Added component %s missing required component %s.".formatted(
+                                component.getClass().getName(),
+                                checkResult.conflictingComponent().getName()));
+            }
+        }
+
         ((Map<Entity, T>) getComponentsMap(component.getClass())).put(entity, component);
 
         for (var componentListener : componentListeners) {
@@ -72,6 +100,14 @@ public final class ComponentManager {
      * Removes the specified component from the specified entity.
      */
     public <T extends Component> void removeComponent(Entity entity, Class<T> componentType) {
+        var checkResult = isComponentRequired(entity, componentType);
+        if (checkResult.isRequired()) {
+            throw new RuntimeException(
+                    "Removed component %s is required by component %s".formatted(
+                            componentType.getName(),
+                            checkResult.requiredComponent().getClass().getName()));
+        }
+
         getComponentsMap(componentType).remove(entity);
     }
 
@@ -83,4 +119,48 @@ public final class ComponentManager {
             components.remove(entity);
         }
     }
+
+    /**
+     * Returns if the given entity has all components that the given
+     * component requires.
+     */
+    private static HasRequiredComponentsResult hasRequiredComponents(Entity entity,
+            ComponentWithRequirements component) {
+        for (var requiredComponent : component.requiredComponents()) {
+            if (entity.getComponent(requiredComponent) == null) {
+                return new HasRequiredComponentsResult(false, requiredComponent);
+            }
+        }
+        return new HasRequiredComponentsResult(true, null);
+    }
+
+    /**
+     * Returns if the given component is required by any of the other
+     * components on the given entity.
+     */
+    private static <T extends Component> IsComponentRequiredResult isComponentRequired(Entity entity,
+            Class<T> componentType) {
+        for (var otherComponent : entity.getAllComponents()) {
+            if (otherComponent instanceof ComponentWithRequirements componentWithRequirements &&
+                    componentWithRequirements.requiredComponents().contains(componentType)) {
+                return new IsComponentRequiredResult(true, componentWithRequirements);
+            }
+        }
+        return new IsComponentRequiredResult(false, null);
+    }
+
+    /**
+     * Holds the result of hasRequiredComponents, conflictingComponent is null
+     * if hasAllRequired is true.
+     */
+    private record HasRequiredComponentsResult(boolean hasAllRequired,
+            Class<? extends Component> conflictingComponent) {
+    };
+
+    /**
+     * Holds the result of isComponentRequired, requiredComponent is null if
+     * ifRequired is false.
+     */
+    private record IsComponentRequiredResult(boolean isRequired, ComponentWithRequirements requiredComponent) {
+    };
 }
