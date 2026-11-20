@@ -30,6 +30,7 @@ class GameRenderableEntity implements GameRenderable {
      */
     protected void update() {
         var transform = entity.getComponent(TransformComponent.class);
-        sprite.setPosition(transform.position.x, transform.position.y);
+        sprite.setScale(transform.scale.x, transform.scale.y);
+        sprite.setPosition(transform.position.x - sprite.getWidth()/2, transform.position.y - sprite.getHeight()/2);
     }
 }

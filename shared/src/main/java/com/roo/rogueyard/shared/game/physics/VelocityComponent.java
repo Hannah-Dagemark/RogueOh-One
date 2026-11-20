@@ -12,7 +12,7 @@ import com.roo.rogueyard.shared.engine.ecs.RequiredComponentsBuilder;
  */
 public class VelocityComponent implements ComponentWithRequirements {
     public Vector2 velocity;
-    VelocityComponent(Vector2 velocity) {
+    public VelocityComponent(Vector2 velocity) {
         this.velocity = velocity;
     }
 

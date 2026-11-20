@@ -5,8 +5,12 @@ import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
+import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
+import com.roo.rogueyard.shared.game.npc.ecs.HuntBehaviourSystem;
+import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 
 /**
@@ -16,12 +20,22 @@ public final class GameModel {
     private final CompositeEventBus eventBus = new CompositeEventBus();
 
     private Entity player;
+    private Entity[] enemies;
 
     public GameModel() {
         initComponents();
         initSystems();
+        initEntities();
+    }
 
+    private void initEntities() {
         player = PlayerFactory.createPlayer();
+
+        EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
+        enemies = new Entity[3];
+        for (int i = 0; i <= 2; i++) {
+            enemies[i] = enemyFactory.createNPC();
+        }
     }
 
     /**
@@ -40,6 +54,9 @@ public final class GameModel {
         new ResistanceSystem();
         new HealthSystem();
         new PhysicsSystem();
+        new TrackingBehaviourSystem();
+        new HuntBehaviourSystem();
+        new VelocitySystem();
         new VisualSystem(eventBus);
     }
 
