@@ -25,7 +25,7 @@ public final class PlayerFactory {
     public static Entity createPlayer() {
         Entity player = EntityManager.getInstance().createEntity();
         player.addComponent(new HealthComponent(playerMaxHealth));
-        player.addComponent(new TransformComponent(new Vector2(500, 100), new Vector2(1f, 1f), 0));
+        player.addComponent(new TransformComponent(new Vector2(500, 0)));
         player.addComponent(new VisualComponent(VisualType.PLAYER, true));
         player.addComponent(new VelocityComponent(new Vector2(0,0)));
 

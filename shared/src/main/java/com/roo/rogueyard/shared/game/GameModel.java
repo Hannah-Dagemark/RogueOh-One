@@ -1,5 +1,7 @@
 package com.roo.rogueyard.shared.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
@@ -10,6 +12,7 @@ import com.roo.rogueyard.shared.game.npc.ecs.HuntBehaviourSystem;
 import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 
@@ -35,8 +38,6 @@ public final class GameModel {
         enemies = new Entity[3];
         for (int i = 0; i <= 2; i++) {
             enemies[i] = enemyFactory.createNPC();
-            enemies[i].getComponent(TransformComponent.class).position
-                    .set(new Vector2().setToRandomDirection().scl(10));
         }
     }
 
