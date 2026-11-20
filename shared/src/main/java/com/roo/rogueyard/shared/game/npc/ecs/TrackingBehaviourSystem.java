@@ -10,6 +10,13 @@ import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
 import java.util.Map;
 
+/**
+ * System which scans for nearby enemies to hunt, tracking them if they're within distance and keeping a check on if
+ * they are within tracking distance.
+ */
+/*
+ * TODO: Make the tracking behaviour system more dynamic, able to trigger different responses beyond a simple hunt if a targetable enttiy is located
+ */
 public class TrackingBehaviourSystem extends ECSSystemSingle<TrackingBehaviourComponent> {
     public TrackingBehaviourSystem() {
         super(TrackingBehaviourComponent.class);
@@ -31,8 +38,6 @@ public class TrackingBehaviourSystem extends ECSSystemSingle<TrackingBehaviourCo
             if (delta.len() > trackingBehaviour.trackingDistance) {
                 entity.removeComponent(HuntBehaviourComponent.class);
                 velocity.velocity.set(new Vector2());
-
-                System.out.println("Ending hunt");
             }
         } else {
             Map<Entity, TransformComponent> eligibleTargets = ComponentManager.getInstance()
@@ -54,8 +59,6 @@ public class TrackingBehaviourSystem extends ECSSystemSingle<TrackingBehaviourCo
                             continue;
                         }
                     }
-
-                    System.out.println("Adding hunt component");
                     entity.addComponent(new HuntBehaviourComponent(targetEntity, 1f));
                 }
             }

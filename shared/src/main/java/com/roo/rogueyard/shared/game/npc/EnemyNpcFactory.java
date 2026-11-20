@@ -11,6 +11,11 @@ import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourComponent;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
+/**
+ * Generic enemy Npc factory, which produces an enemy somewhere in the middle of the screen ( when fullscreen ) which
+ * chases the player when it gets within range. At the moment, a good baseline and template for expansion. Maybe a
+ * good future superclass to unify 'enemy' functionality and structuring.
+ */
 public class EnemyNpcFactory implements NpcFactory {
     @Override
     public Entity createNPC(){
