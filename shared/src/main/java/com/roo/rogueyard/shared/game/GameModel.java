@@ -3,6 +3,7 @@ package com.roo.rogueyard.shared.game;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
@@ -12,7 +13,7 @@ import com.roo.rogueyard.shared.game.player.PlayerFactory;
  * Holds the game state.
  */
 public final class GameModel {
-    private final GameEventBus eventBus = new GameEventBus();
+    private final CompositeEventBus eventBus = new CompositeEventBus();
 
     private Entity player;
 
@@ -37,16 +38,16 @@ public final class GameModel {
     private void initSystems() {
         // Order here is the order systems are executed in.
         new HealthSystem();
-        new VisualSystem(eventBus);
         new PhysicsSystem();
+        new VisualSystem(eventBus);
     }
 
     /**
-     * Returns the game event bus that can be used to send and recieve events
+     * Returns the game event bus that can be used to send events
      * from the GameModel to the GameView.
      */
-    public GameEventBus getEventBus() {
-        return eventBus;
+    public GameEventBus getExternalEventBus() {
+        return eventBus.external;
     }
 
     /**
@@ -54,6 +55,8 @@ public final class GameModel {
      */
     public void update(float deltaTime) {
         ECSManager.getInstance().update(deltaTime);
-        eventBus.dispatch();
+
+        eventBus.internal.dispatch();
+        eventBus.external.dispatch();
     }
 }
