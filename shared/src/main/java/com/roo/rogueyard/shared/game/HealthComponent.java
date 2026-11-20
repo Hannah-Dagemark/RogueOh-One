@@ -11,5 +11,7 @@ public class HealthComponent implements Component {
     public HealthComponent(float maxHealth) {
         this.health = maxHealth;
         this.maxHealth = maxHealth;
+        this.accumulatedHealing = 0;
+        this.accumulatedDamage = new AccumulatedDamage();
     }
 }

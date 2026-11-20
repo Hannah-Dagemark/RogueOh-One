@@ -37,6 +37,7 @@ public final class GameModel {
      */
     private void initSystems() {
         // Order here is the order systems are executed in.
+        new ResistanceSystem();
         new HealthSystem();
         new PhysicsSystem();
         new VisualSystem(eventBus);

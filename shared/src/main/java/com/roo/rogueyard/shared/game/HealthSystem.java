@@ -12,5 +12,8 @@ public class HealthSystem extends ECSSystemSingle<HealthComponent> {
     protected void updateSingle(Entity entity, HealthComponent component) {
         component.health += component.accumulatedHealing;
         component.health -= component.accumulatedDamage.total();
+
+        component.accumulatedHealing = 0;
+        component.accumulatedDamage.reset();
     }
 }
