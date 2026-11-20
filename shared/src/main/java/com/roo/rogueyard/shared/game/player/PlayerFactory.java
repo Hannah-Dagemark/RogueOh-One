@@ -7,7 +7,6 @@ import com.roo.rogueyard.shared.game.HealthComponent;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
-import com.roo.rogueyard.shared.game.physics.PhysicsBodyComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
 /**
