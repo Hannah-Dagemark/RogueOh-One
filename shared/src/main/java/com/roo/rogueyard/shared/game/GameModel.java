@@ -54,6 +54,7 @@ public final class GameModel {
      */
     public void update(float deltaTime) {
         ECSManager.getInstance().update(deltaTime);
+
         eventBus.dispatch();
     }
 }
