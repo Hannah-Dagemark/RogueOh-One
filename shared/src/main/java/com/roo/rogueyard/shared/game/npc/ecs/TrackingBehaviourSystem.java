@@ -56,7 +56,7 @@ public class TrackingBehaviourSystem extends ECSSystemSingle<TrackingBehaviourCo
                     }
 
                     System.out.println("Adding hunt component");
-                    entity.addComponent(new HuntBehaviourComponent(targetEntity, 0.1f));
+                    entity.addComponent(new HuntBehaviourComponent(targetEntity, 1f));
                 }
             }
         }
