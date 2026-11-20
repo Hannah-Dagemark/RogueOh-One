@@ -11,12 +11,11 @@ import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourComponent;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
-public class EnemyNpcFactory extends NpcFactory {
-
+public class EnemyNpcFactory implements NpcFactory {
     @Override
     public Entity createNPC(){
         Entity newEnemy = EntityManager.getInstance().createEntity();
-        newEnemy.addComponent(new TransformComponent(new Vector2(0,0), new Vector2(0.5F, 0.5F), 0));
+        newEnemy.addComponent(new TransformComponent(new Vector2(0,0), new Vector2(0.5f, 0.5f), 0));
         newEnemy.addComponent(new VelocityComponent(new Vector2(0,0)));
         newEnemy.addComponent(new HealthComponent(100));
         newEnemy.addComponent(new TrackingBehaviourComponent(1000, AllegianceType.HOSTILE));

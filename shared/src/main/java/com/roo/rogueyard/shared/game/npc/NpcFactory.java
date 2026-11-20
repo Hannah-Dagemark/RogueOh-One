@@ -2,6 +2,6 @@ package com.roo.rogueyard.shared.game.npc;
 
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 
-public abstract class NpcFactory {
-    public abstract Entity createNPC();
+public interface NpcFactory {
+    Entity createNPC();
 }
