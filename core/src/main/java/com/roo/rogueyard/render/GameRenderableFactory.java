@@ -31,12 +31,20 @@ public final class GameRenderableFactory {
         switch (visual.visualType) {
             case VisualType.PLAYER:
                 return createPlayer(visual, entity);
+            case VisualType.ENEMY:
+                return createEnemy(visual, entity);
             default:
                 throw new RuntimeException("Unimplmented visual type.");
         }
     }
 
     private GameRenderable createPlayer(VisualComponent visual, Entity entity) {
+        var sprite = new Sprite(loadTexture("robo-guy"));
+        sprite.setAlpha(visual.visible ? 1 : 0);
+        return new GameRenderableEntity(sprite, entity);
+    }
+
+    private GameRenderable createEnemy(VisualComponent visual, Entity entity) {
         var sprite = new Sprite(loadTexture("bulker"));
         return new GameRenderableEntity(sprite, entity);
     }

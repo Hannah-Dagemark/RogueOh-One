@@ -38,6 +38,7 @@ class GameRenderableEntity implements GameRenderable {
      * Update the sprite to conform to the entity.
      */
     protected void update() {
-        sprite.setPosition(transform.position.x, transform.position.y);
+        sprite.setScale(transform.scale.x, transform.scale.y);
+        sprite.setPosition(transform.position.x - sprite.getWidth() / 2, transform.position.y - sprite.getHeight() / 2);
     }
 }
