@@ -15,11 +15,11 @@ public class EnemyNpcFactory implements NpcFactory {
     @Override
     public Entity createNPC(){
         Entity newEnemy = EntityManager.getInstance().createEntity();
-        newEnemy.addComponent(new TransformComponent(new Vector2(0,0), new Vector2(0.5f, 0.5f), 0));
+        newEnemy.addComponent(new TransformComponent(new Vector2().setToRandomDirection().scl(500).add(800, 500), new Vector2(0.2f, 0.2f), 0));
         newEnemy.addComponent(new VelocityComponent(new Vector2(0,0)));
         newEnemy.addComponent(new HealthComponent(100));
-        newEnemy.addComponent(new TrackingBehaviourComponent(1000, AllegianceType.HOSTILE));
-        newEnemy.addComponent(new VisualComponent(VisualType.PLAYER, true));
+        newEnemy.addComponent(new TrackingBehaviourComponent(500, AllegianceType.HOSTILE));
+        newEnemy.addComponent(new VisualComponent(VisualType.ENEMY, true));
         return newEnemy;
     };
 }
