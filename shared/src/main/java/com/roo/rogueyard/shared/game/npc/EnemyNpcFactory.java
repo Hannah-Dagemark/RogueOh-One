@@ -19,12 +19,12 @@ import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 public class EnemyNpcFactory implements NpcFactory {
     @Override
     public Entity createNPC(){
-        Entity newEnemy = EntityManager.getInstance().createEntity();
-        newEnemy.addComponent(new TransformComponent(new Vector2().setToRandomDirection().scl(500).add(800, 500), new Vector2(0.2f, 0.2f), 0));
-        newEnemy.addComponent(new VelocityComponent(new Vector2(0,0)));
-        newEnemy.addComponent(new HealthComponent(100));
-        newEnemy.addComponent(new TrackingBehaviourComponent(500, AllegianceType.HOSTILE));
-        newEnemy.addComponent(new VisualComponent(VisualType.ENEMY, true));
-        return newEnemy;
+        Entity enemy = EntityManager.getInstance().createEntity();
+        enemy.addComponent(new TransformComponent(new Vector2().setToRandomDirection().scl(500).add(800, 500), new Vector2(0.2f, 0.2f), 0));
+        enemy.addComponent(new VelocityComponent(new Vector2(0,0)));
+        enemy.addComponent(new HealthComponent(100));
+        enemy.addComponent(new TrackingBehaviourComponent(500, AllegianceType.HOSTILE));
+        enemy.addComponent(new VisualComponent(VisualType.ENEMY, true));
+        return enemy;
     };
 }

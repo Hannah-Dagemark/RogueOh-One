@@ -2,7 +2,6 @@ package com.roo.rogueyard.shared.game.npc.ecs;
 
 import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
-import com.roo.rogueyard.shared.game.HealthComponent;
 
 /**
  * Abstract representation of a behaviour system. For now, this is mainly a template for creating new behaviour systems.

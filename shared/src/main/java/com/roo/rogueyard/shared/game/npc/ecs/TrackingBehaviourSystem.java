@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
-import com.roo.rogueyard.shared.engine.ecs.SystemManager;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
