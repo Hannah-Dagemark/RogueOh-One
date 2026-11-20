@@ -24,14 +24,14 @@ public class MainMenu extends BaseScreen {
     public void show() {
         title = new Sprite(new Texture(Gdx.files.internal("ui/main-menu/logo.png")));
         batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, 1600, 1000);
     }
 
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(title, 0, 0);
+        batch.draw(title, 100, 0, 1400, 1000);
         batch.end();
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             game.setScreen(new MainScreen(game));
