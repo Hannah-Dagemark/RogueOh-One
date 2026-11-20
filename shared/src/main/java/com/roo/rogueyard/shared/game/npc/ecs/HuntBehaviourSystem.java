@@ -12,14 +12,12 @@ public class HuntBehaviourSystem extends ECSSystemSingle<HuntBehaviourComponent>
     }
 
     @Override
-    protected void updateSingle(Entity entity, HuntBehaviourComponent component) {
-        Vector2 targetPosition = component.huntTarget.getComponent(TransformComponent.class).position;
-        Vector2 velocityToTarget = targetPosition.sub(entity.getComponent(TransformComponent.class).position).limit(component.huntSpeed);
-        entity.getComponent(VelocityComponent.class).velocity.set(velocityToTarget);
-        System.out.println("Chasing with speed");
-        System.out.println(velocityToTarget);
-        System.out.println(component.huntTarget);
-        System.out.println("Player position");
-        System.out.println(targetPosition);
+    protected void updateSingle(Entity entity, HuntBehaviourComponent huntBehaviour) {
+        var transform = entity.getComponent(TransformComponent.class);
+        var velocity = entity.getComponent(VelocityComponent.class);
+        var targetTransform = huntBehaviour.huntTarget.getComponent(TransformComponent.class);
+
+        Vector2 velocityToTarget = new Vector2(targetTransform.position).sub(transform.position).limit(huntBehaviour.huntSpeed);
+        velocity.velocity.set(velocityToTarget);
     }
 }

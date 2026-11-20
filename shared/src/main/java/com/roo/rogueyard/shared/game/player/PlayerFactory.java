@@ -27,7 +27,7 @@ public final class PlayerFactory {
         player.addComponent(new HealthComponent(playerMaxHealth));
         player.addComponent(new TransformComponent(new Vector2(500, 0)));
         player.addComponent(new VisualComponent(VisualType.PLAYER, true));
-        player.addComponent(new VelocityComponent(new Vector2(5,0)));
+        player.addComponent(new VelocityComponent(new Vector2(0.1f,0)));
 
         // TODO: Create body for player
         player.addComponent(new PhysicsBodyComponent(null));

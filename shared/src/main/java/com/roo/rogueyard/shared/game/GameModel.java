@@ -30,11 +30,13 @@ public final class GameModel {
 
     private void initEntities() {
         player = PlayerFactory.createPlayer();
+
         EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
         enemies = new Entity[3];
         for (int i = 0; i <= 2; i++) {
             enemies[i] = enemyFactory.createNPC();
-            enemies[i].getComponent(TransformComponent.class).position.set(new Vector2(0,0).setToRandomDirection().scl(100));
+            enemies[i].getComponent(TransformComponent.class).position
+                    .set(new Vector2().setToRandomDirection().scl(10));
         }
     }
 

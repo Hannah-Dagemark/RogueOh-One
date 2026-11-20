@@ -3,8 +3,6 @@ package com.roo.rogueyard.shared.game.npc.ecs;
 import com.roo.rogueyard.shared.engine.ecs.Component;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 
-import java.util.HashMap;
-
 public class HuntBehaviourComponent implements Component {
     public Entity huntTarget;
     public float huntSpeed;
