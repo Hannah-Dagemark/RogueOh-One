@@ -38,7 +38,6 @@ public final class GameRenderableFactory {
 
     private GameRenderable createPlayer(VisualComponent visual, Entity entity) {
         var sprite = new Sprite(loadTexture("bulker"));
-        sprite.setAlpha(visual.visible ? 1 : 0);
         return new GameRenderableEntity(sprite, entity);
     }
 
