@@ -2,6 +2,7 @@ package com.roo.rogueyard.shared.engine.ecs;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +12,16 @@ import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
 
 class ComponentManagerTest {
-    @BeforeEach
-    void setUp() {
-        EntityManager.getInstance().clearEntities();
-
+    @BeforeAll
+    static void setUp() {
         var componentManager = ComponentManager.getInstance();
         componentManager.registerComponent(TransformComponent.class);
         componentManager.registerComponent(VisualComponent.class);
+    }
+
+    @BeforeEach
+    void setUpEach() {
+        EntityManager.getInstance().clearEntities();
     }
 
     @Test
