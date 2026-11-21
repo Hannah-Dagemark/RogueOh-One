@@ -13,7 +13,6 @@ import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocitySystem;
-import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
@@ -24,7 +23,6 @@ import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
 public final class GameModel {
     private final CompositeEventBus eventBus = new CompositeEventBus();
 
-    private Entity player;
     private Entity[] enemies;
     private final PlayerEntity player;
 
@@ -32,13 +30,14 @@ public final class GameModel {
         initComponents();
         initSystems();
         initEntities();
+
+        player = PlayerFactory.createPlayer();
+
+        /* Must happen AFTER player creation */
+        initInput();
     }
 
     private void initEntities() {
-        player = PlayerFactory.createPlayer();
-
-        initInput();
-
         EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
         enemies = new Entity[3];
         for (int i = 0; i <= 2; i++) {
@@ -48,7 +47,7 @@ public final class GameModel {
 
     /**
      * Sets up all ECS components that don't have a primary system that
-     * initializes them.
+     * initialises them.
      */
     private void initComponents() {
         ComponentManager.getInstance().registerComponent(TransformComponent.class);
@@ -64,7 +63,6 @@ public final class GameModel {
         new PhysicsSystem();
         new TrackingBehaviourSystem();
         new HuntBehaviourSystem();
-        new VelocitySystem();
         new VisualSystem(eventBus);
         new VelocitySystem();
     }
@@ -76,7 +74,7 @@ public final class GameModel {
     }
 
     /**
-     * Returns the game event bus that can be used to send and recieve events
+     * Returns the game event bus that can be used to send and receive events
      * from the GameModel to the GameView.
      */
     public GameEventBus getExternalEventBus() {
