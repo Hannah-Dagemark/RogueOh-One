@@ -4,9 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
+import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
+import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
+import com.roo.rogueyard.shared.game.npc.ecs.HuntBehaviourSystem;
+import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
@@ -16,17 +22,28 @@ import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
  * Holds the game state.
  */
 public final class GameModel {
-    private final GameEventBus eventBus = new GameEventBus();
+    private final CompositeEventBus eventBus = new CompositeEventBus();
 
+    private Entity player;
+    private Entity[] enemies;
     private final PlayerEntity player;
 
     public GameModel() {
         initComponents();
         initSystems();
+        initEntities();
+    }
 
+    private void initEntities() {
         player = PlayerFactory.createPlayer();
 
         initInput();
+
+        EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
+        enemies = new Entity[3];
+        for (int i = 0; i <= 2; i++) {
+            enemies[i] = enemyFactory.createNPC();
+        }
     }
 
     /**
@@ -42,9 +59,13 @@ public final class GameModel {
      */
     private void initSystems() {
         // Order here is the order systems are executed in.
+        new ResistanceSystem();
         new HealthSystem();
-        new VisualSystem(eventBus);
         new PhysicsSystem();
+        new TrackingBehaviourSystem();
+        new HuntBehaviourSystem();
+        new VelocitySystem();
+        new VisualSystem(eventBus);
         new VelocitySystem();
     }
 
@@ -58,8 +79,8 @@ public final class GameModel {
      * Returns the game event bus that can be used to send and recieve events
      * from the GameModel to the GameView.
      */
-    public GameEventBus getEventBus() {
-        return eventBus;
+    public GameEventBus getExternalEventBus() {
+        return eventBus.external;
     }
 
     /**
@@ -67,6 +88,8 @@ public final class GameModel {
      */
     public void update(float deltaTime) {
         ECSManager.getInstance().update(deltaTime);
-        eventBus.dispatch();
+
+        eventBus.internal.dispatch();
+        eventBus.external.dispatch();
     }
 }

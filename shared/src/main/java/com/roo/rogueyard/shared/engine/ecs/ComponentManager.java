@@ -12,7 +12,8 @@ public final class ComponentManager {
     private static final ComponentManager instance = new ComponentManager();
 
     private final Map<Class<? extends Component>, Map<Entity, Component>> componentMaps = new HashMap<>();
-    private final List<ComponentListener> componentListeners = new ArrayList<>();
+    private final List<ComponentAddedListener> componentAddedListeners = new ArrayList<>();
+    private final List<ComponentRemovedListener> componentRemovedListeners = new ArrayList<>();
 
     private ComponentManager() {
     }
@@ -31,10 +32,18 @@ public final class ComponentManager {
 
     /**
      * Adds the given listener to the ones that are notified whenever a
-     * component has been added.
+     * component has been added to an entity.
      */
-    public void addComponentListener(ComponentListener componentListener) {
-        componentListeners.add(componentListener);
+    public void addComponentAddedListener(ComponentAddedListener componentListener) {
+        componentAddedListeners.add(componentListener);
+    }
+
+    /**
+     * Adds the given listener to the ones that are notified whenever a
+     * component has been removed from an entity.
+     */
+    public void addComponentRemovedListener(ComponentRemovedListener componentListener) {
+        componentRemovedListeners.add(componentListener);
     }
 
     /**
@@ -91,7 +100,7 @@ public final class ComponentManager {
 
         ((Map<Entity, T>) getComponentsMap(component.getClass())).put(entity, component);
 
-        for (var componentListener : componentListeners) {
+        for (var componentListener : componentAddedListeners) {
             componentListener.onComponentAdded(entity, component.getClass(), component);
         }
     }
@@ -109,6 +118,10 @@ public final class ComponentManager {
         }
 
         getComponentsMap(componentType).remove(entity);
+
+        for (var componentListener : componentRemovedListeners) {
+            componentListener.onComponentRemoved(entity, componentType);
+        }
     }
 
     /**

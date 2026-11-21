@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.roo.rogueyard.GameView;
 import com.roo.rogueyard.shared.game.GameModel;
 import com.roo.rogueyard.shared.game.event.CreateVisualEvent;
+import com.roo.rogueyard.shared.game.event.DestroyVisualEvent;
 
 /**
  * The main screen where the game is played. Acts as the controller part of
@@ -24,9 +25,12 @@ public class MainScreen extends BaseScreen {
         gameModel = new GameModel();
         gameView = new GameView(gameModel);
 
-        gameModel.getEventBus().subscribe(
+        gameModel.getExternalEventBus().subscribe(
                 CreateVisualEvent.class,
                 gameView.createVisualListener);
+        gameModel.getExternalEventBus().subscribe(
+                DestroyVisualEvent.class,
+                gameView.destroyVisualListener);
     }
 
     @Override

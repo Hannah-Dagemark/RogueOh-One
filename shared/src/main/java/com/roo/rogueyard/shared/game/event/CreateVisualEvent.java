@@ -5,7 +5,7 @@ import com.roo.rogueyard.shared.game.VisualComponent;
 
 /**
  * Represents the event that a new visual element needs to be created for
- * an object that was newly created in the GameModel.
+ * an entity in the GameModel.
  */
 public record CreateVisualEvent(Entity entity, VisualComponent visualComponent) implements GameEvent {
 }

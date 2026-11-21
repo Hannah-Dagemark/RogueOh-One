@@ -3,6 +3,7 @@ package com.roo.rogueyard.render;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 
 /**
@@ -12,14 +13,22 @@ import com.roo.rogueyard.shared.game.physics.TransformComponent;
 class GameRenderableEntity implements GameRenderable {
     private Sprite sprite;
     private Entity entity;
+    private TransformComponent transform;
+    private VisualComponent visual;
 
     public GameRenderableEntity(Sprite sprite, Entity entity) {
         this.sprite = sprite;
         this.entity = entity;
+        this.transform = entity.getComponent(TransformComponent.class);
+        this.visual = entity.getComponent(VisualComponent.class);
     }
 
     @Override
     public void draw(SpriteBatch batch) {
+        if (!visual.visible) {
+            return;
+        }
+
         update();
 
         sprite.draw(batch);
@@ -29,7 +38,7 @@ class GameRenderableEntity implements GameRenderable {
      * Update the sprite to conform to the entity.
      */
     protected void update() {
-        var transform = entity.getComponent(TransformComponent.class);
-        sprite.setPosition(transform.position.x, transform.position.y);
+        sprite.setScale(transform.scale.x, transform.scale.y);
+        sprite.setPosition(transform.position.x - sprite.getWidth() / 2, transform.position.y - sprite.getHeight() / 2);
     }
 }
