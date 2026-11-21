@@ -8,6 +8,7 @@ import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
 import com.roo.rogueyard.shared.game.physics.PhysicsBodyComponent;
+import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 
 /**
  * Handles creating players.
@@ -21,9 +22,10 @@ public final class PlayerFactory {
     /**
      * Creates the default player entity.
      */
-    public static Entity createPlayer() {
-        Entity player = EntityManager.getInstance().createEntity();
+    public static PlayerEntity createPlayer() {
+        PlayerEntity player = new PlayerEntity(EntityManager.getInstance().claimEntityId());
         player.addComponent(new TransformComponent(new Vector2(0, 0)));
+        player.addComponent(new VelocityComponent(new Vector2()));
         player.addComponent(new HealthComponent(playerMaxHealth));
         player.addComponent(new VisualComponent(VisualType.PLAYER, true));
 

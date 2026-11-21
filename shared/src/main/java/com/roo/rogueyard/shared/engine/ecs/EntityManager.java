@@ -55,6 +55,17 @@ public final class EntityManager {
     }
 
     /**
+     * Returns the next free entity id. Used for subclasses of Entity, otherwise use createEntity().
+     */
+    public int claimEntityId() {
+        if (nextId > maxId) {
+            throw new RuntimeException("Max entities reached");
+        }
+
+        return nextId++;
+    }
+
+    /**
      * Marks an entity for destruction upon calling `cleanUpEntities`.
      */
     public void destroyEntity(Entity entity) {

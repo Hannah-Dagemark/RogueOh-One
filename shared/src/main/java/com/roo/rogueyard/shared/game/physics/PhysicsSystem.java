@@ -17,8 +17,6 @@ public class PhysicsSystem extends ECSSystemSingle<PhysicsBodyComponent> impleme
     @Override
     protected void updateSingle(Entity entity, PhysicsBodyComponent physicsBody) {
         var transform = entity.getComponent(TransformComponent.class);
-
-        transform.position.x += 1;
     }
 
     @Override

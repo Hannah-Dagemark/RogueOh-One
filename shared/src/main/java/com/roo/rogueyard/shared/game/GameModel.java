@@ -1,12 +1,16 @@
 package com.roo.rogueyard.shared.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
-import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocitySystem;
+import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
+import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
 
 /**
  * Holds the game state.
@@ -14,13 +18,15 @@ import com.roo.rogueyard.shared.game.player.PlayerFactory;
 public final class GameModel {
     private final GameEventBus eventBus = new GameEventBus();
 
-    private Entity player;
+    private final PlayerEntity player;
 
     public GameModel() {
         initComponents();
         initSystems();
 
         player = PlayerFactory.createPlayer();
+
+        initInput();
     }
 
     /**
@@ -39,6 +45,13 @@ public final class GameModel {
         new HealthSystem();
         new VisualSystem(eventBus);
         new PhysicsSystem();
+        new VelocitySystem();
+    }
+
+    private void initInput() {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new PlayerInputProcessor(player));
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     /**
