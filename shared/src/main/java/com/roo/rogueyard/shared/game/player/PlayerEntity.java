@@ -1,10 +1,10 @@
 package com.roo.rogueyard.shared.game.player;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.DirectionType;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
+import com.roo.rogueyard.shared.game.physics.VelocityFactorComponent;
 
 /**
  * Core Player variant of the Entity class. This class holds the functionality unique to player characters, currently being controlled by users.
@@ -14,11 +14,20 @@ import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 public class PlayerEntity extends Entity {
     private final Vector2 leftVector = new Vector2(-1f, 0);
     private final Vector2 rightVector = new Vector2(1f, 0);
-    private final Vector2 upVector = new Vector2(0, -1f);
-    private final Vector2 downVector = new Vector2(0, 1f);
+    private final Vector2 upVector = new Vector2(0, 1f);
+    private final Vector2 downVector = new Vector2(0, -1f);
+    public float movementSpeedMultiplier;
 
     public PlayerEntity(int id) {
         super(id);
+    }
+
+    public void sprint() {
+        this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor += 3;
+    }
+
+    public void stopSprint() {
+        this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor -= 3;
     }
 
     public boolean movePlayer (DirectionType direction) {
@@ -73,14 +82,14 @@ public class PlayerEntity extends Entity {
                 yield false;
             }
             case DirectionType.UP -> {
-                if (velocityComponent.velocity.y < 0){
+                if (velocityComponent.velocity.y > 0){
                     velocityComponent.velocity.y = 0;
                     yield true;
                 }
                 yield false;
             }
             case DirectionType.DOWN -> {
-                if (velocityComponent.velocity.y > 0){
+                if (velocityComponent.velocity.y < 0){
                     velocityComponent.velocity.y = 0;
                     yield true;
                 }

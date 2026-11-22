@@ -12,6 +12,7 @@ import com.roo.rogueyard.shared.game.npc.ecs.HuntBehaviourSystem;
 import com.roo.rogueyard.shared.game.npc.ecs.TrackingBehaviourSystem;
 import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
+import com.roo.rogueyard.shared.game.physics.VelocityFactorSystem;
 import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
@@ -65,6 +66,7 @@ public final class GameModel {
         new HuntBehaviourSystem();
         new VisualSystem(eventBus);
         new VelocitySystem();
+        new VelocityFactorSystem();
     }
 
     private void initInput() {

@@ -30,6 +30,10 @@ public class PlayerInputProcessor extends InputAdapter {
                 player.movePlayer(DirectionType.DOWN);
                 yield true;
             }
+            case Input.Keys.SHIFT_LEFT -> {
+                player.sprint();
+                yield true;
+            }
             default -> false;
         };
     }
@@ -50,6 +54,10 @@ public class PlayerInputProcessor extends InputAdapter {
             }
             case Input.Keys.DOWN -> {
                 player.stopMovingPlayer(DirectionType.DOWN);
+                yield true;
+            }
+            case Input.Keys.SHIFT_LEFT -> {
+                player.stopSprint();
                 yield true;
             }
             default -> false;
