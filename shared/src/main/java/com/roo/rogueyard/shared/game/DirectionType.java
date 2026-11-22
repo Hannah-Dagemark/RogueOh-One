@@ -1,9 +1,8 @@
 package com.roo.rogueyard.shared.game;
 
 /**
- * The type of visual object. Should be enough to select a specific sprite
- * to represent this object together with the additional data in
- * VisualComponent.
+ * Enum for passing and taking direction as argument.
+ * Mainly useful for positioning functions, used in InputProcessor for example.
  */
 public enum DirectionType {
     UP,

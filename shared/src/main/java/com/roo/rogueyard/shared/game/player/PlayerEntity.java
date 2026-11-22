@@ -22,14 +22,25 @@ public class PlayerEntity extends Entity {
         super(id);
     }
 
+    /**
+     * Makes the playere enter 'sprint', which increases addativeVelocityFactor
+     */
     public void sprint() {
         this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor += 3;
     }
 
+    /**
+     * Makes the player leave 'sprint', which brings back the addativeVelocityFactor from previous increase due to sprint.
+     */
     public void stopSprint() {
         this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor -= 3;
     }
 
+    /**
+     * Make the player begin moving in a specific direction
+     * @param direction Direction in which to move the player
+     * @return Boolean; true if the move was successful, false if the player was unable to begin moving
+     */
     public boolean movePlayer (DirectionType direction) {
         VelocityComponent velocityComponent = this.getComponent(VelocityComponent.class);
         return switch (direction) {
@@ -64,6 +75,11 @@ public class PlayerEntity extends Entity {
         };
     }
 
+    /**
+     * Stop the players current movement in a direction.
+     * @param direction Direction to stop moving in
+     * @return Boolean; true if the player stopped moving in a direction, false if it was unable to stop - most likely because it was not moving in that direction
+     */
     public boolean stopMovingPlayer (DirectionType direction) {
         VelocityComponent velocityComponent = this.getComponent(VelocityComponent.class);
         return switch (direction) {
@@ -98,6 +114,7 @@ public class PlayerEntity extends Entity {
         };
     }
 
+    /* Private func to check if a move is eligible */
     private boolean canMovePlayerBy(Vector2 movement){
         float maxX = 1900;
         float maxY = 1000;

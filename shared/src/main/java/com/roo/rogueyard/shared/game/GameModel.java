@@ -38,6 +38,11 @@ public final class GameModel {
         initInput();
     }
 
+    /**
+     * Initialise all non-player entities. At the moment used for demo, this will be moved to layer-specific
+     * functionality later on.
+     */
+    /* TODO: Move to Layer's concern once layer is implemented. */
     private void initEntities() {
         EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
         enemies = new Entity[3];
@@ -69,6 +74,9 @@ public final class GameModel {
         new VelocityFactorSystem();
     }
 
+    /**
+     * Initialise input processors which are attached to the Gdx input multiplexer.
+     */
     private void initInput() {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new PlayerInputProcessor(player));

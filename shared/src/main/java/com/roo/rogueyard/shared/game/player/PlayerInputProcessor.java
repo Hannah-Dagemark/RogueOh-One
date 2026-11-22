@@ -5,6 +5,10 @@ import com.badlogic.gdx.InputAdapter;
 import com.roo.rogueyard.shared.game.DirectionType;
 
 /* TODO: For MVC adherence, and for multiplayer compatibility in shared, I think this needs to move to core at some point? */
+
+/**
+ * Processor for the Player class. Used for movement and combat input. Should be lowest in input multiplexor, as user input to player character should take the least precedent.
+ */
 public class PlayerInputProcessor extends InputAdapter {
     private final PlayerEntity player;
     public PlayerInputProcessor(PlayerEntity player) {
