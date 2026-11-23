@@ -35,7 +35,7 @@ configure(subprojects) {
       showSkipped true
       showFailed true
       showSummary true
-      logLevel 'quiet'
+      logLevel 'warn'
     }
   }
 
