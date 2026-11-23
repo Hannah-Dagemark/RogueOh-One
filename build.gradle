@@ -7,8 +7,7 @@ buildscript {
     maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
   }
   dependencies {
-
-
+    classpath "com.adarshr:gradle-test-logger-plugin:4.0.0"
   }
 }
 
@@ -27,6 +26,19 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: 'java-library'
+  apply plugin: 'com.adarshr.test-logger'
+
+  tasks.withType(Test).configureEach {
+    testlogger {
+      theme 'mocha'
+      showPassed true
+      showSkipped true
+      showFailed true
+      showSummary true
+      logLevel 'warn'
+    }
+  }
+
   java.sourceCompatibility = 21
   java.targetCompatibility = 21
 
@@ -68,3 +80,18 @@ subprojects {
 }
 
 eclipse.project.name = 'RogueYard' + '-parent'
+
+project(':shared') {
+  tasks.register('checkTestLogger') {
+    doLast {
+      println "Plugin applied: " +
+        project.plugins.hasPlugin('com.adarshr.test-logger')
+
+      println "Project extension exists: " +
+        (project.extensions.findByName('testlogger') != null)
+
+      println "Test task extension exists: " +
+        (project.tasks.test.extensions.findByName('testlogger') != null)
+    }
+  }
+}
