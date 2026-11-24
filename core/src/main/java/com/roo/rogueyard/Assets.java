@@ -24,14 +24,13 @@ public final class Assets {
     // InternalFileHandleResolver();
 
     // valid extensions for assets
-    private static final String[] textureExtensions = { ".png", ".jpg" };
-    private static final String[] sfxExtensions = { ".wav", ".mp3", ".flac" };
-    private static final String[] musicExtensions = sfxExtensions;
-    private static final String[] fontExtensions = { ".ttf" };
+    private static final String[] TEXTURE_EXT = { ".png", ".jpg" };
+    private static final String[] AUDIO_EXT = { ".wav", ".mp3", ".flac" };
+    private static final String[] FONT_EXT = { ".ttf" };
 
     private static String TEXTURE_DIR = "textures/";
-    private static String SFX_DIR = "sfx/";
-    private static String MUSIC_FIR = "music/";
+    private static String SOUND_DIR = "sound/";
+    private static String MUSIC_DIR = "music/";
     private static String FONT_DIR = "fonts/";
 
     private Assets() {
@@ -73,13 +72,13 @@ public final class Assets {
         for (String rawLine : listFile.readString("UTF-8").split("\\r?\\n")) {
             String path = rawLine.trim();
 
-            if (path.startsWith(TEXTURE_DIR) && endsWithAny(path, textureExtensions)) {
+            if (path.startsWith(TEXTURE_DIR) && endsWithAny(path, TEXTURE_EXT)) {
                 gdxAssets.load(path, Texture.class);
-            } else if (path.startsWith(SFX_DIR) && endsWithAny(path, sfxExtensions)) {
+            } else if (path.startsWith(SOUND_DIR) && endsWithAny(path, AUDIO_EXT)) {
                 gdxAssets.load(path, Sound.class);
-            } else if (path.startsWith(MUSIC_FIR) && endsWithAny(path, musicExtensions)) {
+            } else if (path.startsWith(MUSIC_DIR) && endsWithAny(path, AUDIO_EXT)) {
                 gdxAssets.load(path, Music.class);
-            } else if (path.startsWith(FONT_DIR) && endsWithAny(path, fontExtensions)) {
+            } else if (path.startsWith(FONT_DIR) && endsWithAny(path, FONT_EXT)) {
                 // TODO: fonts
             } else {
                 System.out.println("[ASSETS : warning] : unsupported asset : \"" + path + "\"");
@@ -90,45 +89,28 @@ public final class Assets {
         gdxAssets.finishLoading();
     }
 
-    /**
-     * cool way to get tuples in java
-     */
-    private record AssetSpec(String basePath, Class<?> expectedType) {
+    public static Texture getTexture(String file) {
+        String fullPath = TEXTURE_DIR + file;
+        return get(fullPath, Texture.class);
     }
 
-    /**
-     * resolves correct extension and type from file name
-     */
-    private static AssetSpec resolveSpec(String fileName) {
-        if (endsWithAny(fileName, textureExtensions)) {
-            return new AssetSpec(TEXTURE_DIR, Texture.class);
-        }
-        if (endsWithAny(fileName, sfxExtensions)) {
-            return new AssetSpec(SFX_DIR, Sound.class);
-        }
-        if (endsWithAny(fileName, musicExtensions)) {
-            return new AssetSpec(MUSIC_FIR, Music.class);
-        }
-        throw new IllegalArgumentException("[ASSETS] : unsupported asset extension for file: " + fileName);
+    public static Sound getSound(String file) {
+        String fullPath = SOUND_DIR + file;
+        return get(fullPath, Sound.class);
     }
 
-    /**
-     * getter for loaded assets:
-     * provide filename WITH extension and type
-     */
-    public static <T> T get(String file, Class<T> type) {
-        AssetSpec spec = resolveSpec(file);
-        if (!type.isAssignableFrom(spec.expectedType())) {
-            throw new IllegalArgumentException(
-                    "[ASSETS] Type mismatch for \"" + file + "\": expected " + spec.expectedType().getSimpleName()
-                            + ", got " + type.getSimpleName());
-        }
+    public static Music getMusic(String file) {
+        String fullPath = MUSIC_DIR + file;
+        return get(fullPath, Music.class);
+    }
 
-        String fullPath = spec.basePath() + file;
+    private static <T> T get(String fullPath, Class<T> type) {
+        if (instance == null) {
+            throw new IllegalStateException("[ASSETS] Asset manager not initialized");
+        }
         if (!instance.gdxAssets.isLoaded(fullPath, type)) {
             throw new IllegalStateException("[ASSETS] Asset not loaded: \"" + fullPath + "\"");
         }
-
         return instance.gdxAssets.get(fullPath, type);
     }
 
