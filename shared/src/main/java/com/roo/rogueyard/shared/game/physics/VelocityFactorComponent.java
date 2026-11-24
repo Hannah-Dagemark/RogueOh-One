@@ -4,7 +4,10 @@ import com.roo.rogueyard.shared.engine.ecs.Component;
 import com.roo.rogueyard.shared.engine.ecs.ComponentWithRequirements;
 import com.roo.rogueyard.shared.engine.ecs.RequiredComponentsBuilder;
 
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Velocity Factor component which holds scalar factors to be applied to the velocity of an entity. Resultant factor
@@ -15,12 +18,12 @@ import java.util.List;
  * These are multiplied together before being added as a scalar to velocity position change.
  */
 public class VelocityFactorComponent implements ComponentWithRequirements {
-    public float additiveVelocityFactor;
-    public float multiplicativeVelocityFactor;
+    public Map<String, Float> additiveFactorSources;
+    public Map<String, Float> multiplicativeFactorSources;
 
     public VelocityFactorComponent() {
-        this.additiveVelocityFactor = 1;
-        this.multiplicativeVelocityFactor = 1;
+        this.additiveFactorSources = new HashMap<>();
+        this.multiplicativeFactorSources = new HashMap<>();
     }
 
     @Override

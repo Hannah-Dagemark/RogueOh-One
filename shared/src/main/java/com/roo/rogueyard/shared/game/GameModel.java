@@ -35,7 +35,7 @@ public final class GameModel {
         player = PlayerFactory.createPlayer();
 
         /* Must happen AFTER player creation */
-        initInput();
+        initInput(player);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class GameModel {
     /**
      * Initialise input processors which are attached to the Gdx input multiplexer.
      */
-    private void initInput() {
+    private void initInput(PlayerEntity player) {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new PlayerInputProcessor(player));
         Gdx.input.setInputProcessor(multiplexer);

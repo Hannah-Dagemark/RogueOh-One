@@ -23,17 +23,17 @@ public class PlayerEntity extends Entity {
     }
 
     /**
-     * Makes the playere enter 'sprint', which increases addativeVelocityFactor
+     * Makes the player enter 'sprint', which increases additiveVelocityFactor by adding sprint factor source
      */
     public void sprint() {
-        this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor += 3;
+        this.getComponent(VelocityFactorComponent.class).additiveFactorSources.put("sprint", 3f);
     }
 
     /**
-     * Makes the player leave 'sprint', which brings back the addativeVelocityFactor from previous increase due to sprint.
+     * Makes the player leave 'sprint', which removes the sprint additiveFactorSource.
      */
     public void stopSprint() {
-        this.getComponent(VelocityFactorComponent.class).additiveVelocityFactor -= 3;
+        this.getComponent(VelocityFactorComponent.class).additiveFactorSources.remove("sprint");
     }
 
     /**
