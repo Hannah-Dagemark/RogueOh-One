@@ -35,13 +35,13 @@ public final class GameRenderableFactory {
     }
 
     private GameRenderable createPlayer(VisualComponent visual, Entity entity) {
-        var sprite = new Sprite(Assets.get("robo-guy.png", Texture.class));
+        var sprite = new Sprite(Assets.getTexture("robo-guy.png"));
         sprite.setAlpha(visual.visible ? 1 : 0);
         return new GameRenderableEntity(sprite, entity);
     }
 
     private GameRenderable createEnemy(VisualComponent visual, Entity entity) {
-        var sprite = new Sprite(Assets.get("bulker.png", Texture.class));
+        var sprite = new Sprite(Assets.getTexture("bulker.png"));
         return new GameRenderableEntity(sprite, entity);
     }
 }
