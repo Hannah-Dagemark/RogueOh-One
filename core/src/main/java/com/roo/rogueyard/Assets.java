@@ -50,9 +50,8 @@ public final class Assets {
         }
     }
 
-    /*
-     * helper function to match against all file extensions defined in
-     * "[Type]Extensions"
+    /**
+     * helper function to match against all file extensions
      */
     private static boolean endsWithAny(String value, String[] suffixes) {
         for (String suffix : suffixes) {
