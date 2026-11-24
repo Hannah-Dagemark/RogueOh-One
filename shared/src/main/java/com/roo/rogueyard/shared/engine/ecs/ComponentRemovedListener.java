@@ -5,5 +5,5 @@ package com.roo.rogueyard.shared.engine.ecs;
  * an entity.
  */
 public interface ComponentRemovedListener {
-    void onComponentRemoved(Entity entity, Class<?> componentType);
+    void onComponentRemoved(Entity entity, Class<?> componentType, Object component);
 }
