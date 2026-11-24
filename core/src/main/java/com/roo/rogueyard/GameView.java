@@ -25,7 +25,6 @@ public class GameView {
     public final Consumer<DestroyVisualEvent> destroyVisualListener = this::onDestroyVisualEvent;
 
     public GameView(GameModel model) {
-        Assets.init();
         batch = new SpriteBatch();
         renderableFactory = new GameRenderableFactory();
     }
@@ -64,6 +63,5 @@ public class GameView {
      */
     public void dispose() {
         batch.dispose();
-        Assets.dispose();
     }
 }

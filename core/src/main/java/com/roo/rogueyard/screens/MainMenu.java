@@ -23,6 +23,7 @@ public class MainMenu extends BaseScreen {
 
     @Override
     public void show() {
+        Assets.init(); // NOTE: should this be here?
         title = new Sprite(Assets.get("logo.png", Texture.class));
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, 1600, 1000);
@@ -41,6 +42,7 @@ public class MainMenu extends BaseScreen {
 
     @Override
     public void hide() {
+        Assets.dispose();
         batch.dispose();
     }
 }
