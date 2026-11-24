@@ -117,10 +117,12 @@ public final class ComponentManager {
                             checkResult.requiredComponent().getClass().getName()));
         }
 
+        T component = getComponent(entity, componentType);
+
         getComponentsMap(componentType).remove(entity);
 
         for (var componentListener : componentRemovedListeners) {
-            componentListener.onComponentRemoved(entity, componentType);
+            componentListener.onComponentRemoved(entity, componentType, component);
         }
     }
 
