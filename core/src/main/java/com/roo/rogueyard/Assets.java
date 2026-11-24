@@ -133,7 +133,7 @@ public final class Assets {
     }
 
     public static void dispose() {
-        if (instance == null) {
+        if (instance != null) {
             instance.gdxAssets.dispose();
         }
     }
