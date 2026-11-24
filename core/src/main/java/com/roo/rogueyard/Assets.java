@@ -2,50 +2,57 @@ package com.roo.rogueyard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+
+// for fonts
+// import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+// import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+// import com.badlogic.gdx.graphics.g2d.BitmapFont;
+// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+// import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 public final class Assets {
-
-    private static final Assets instance = new Assets();
+    private static Assets instance;
     private final AssetManager gdxAssets = new AssetManager();
 
     // for fonts
-    private static FileHandleResolver resolver = new InternalFileHandleResolver();
+    // private static FileHandleResolver resolver = new
+    // InternalFileHandleResolver();
 
     // valid extensions for assets
-    private String[] textureExtensions = { ".png", ".jpg" };
-    private String[] sfxExtensions = { ".wav", ".mp3", ".flac" };
-    private String[] musicExtensions = sfxExtensions;
-    private String[] fontExtensions = { ".ttf" };
+    private static final String[] textureExtensions = { ".png", ".jpg" };
+    private static final String[] sfxExtensions = { ".wav", ".mp3", ".flac" };
+    private static final String[] musicExtensions = sfxExtensions;
+    private static final String[] fontExtensions = { ".ttf" };
 
-    private static String texturePath = "sfx/";
-    private static String sfxPath = "sfx/";
-    private static String musicPath = "music/";
-    private static String fontPath = "fonts/";
+    private static String TEXTURE_DIR = "textures/";
+    private static String SFX_DIR = "sfx/";
+    private static String MUSIC_FIR = "music/";
+    private static String FONT_DIR = "fonts/";
 
     private Assets() {
         // setup font loading
-        // gdxAssets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        // gdxAssets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+        // gdxAssets.setLoader(FreeTypeFontGenerator.class, new
+        // FreeTypeFontGeneratorLoader(resolver));
+        // gdxAssets.setLoader(BitmapFont.class, ".ttf", new
+        // FreetypeFontLoader(resolver));
 
         loadAssets();
     }
 
-    public static Assets getInstance() {
-        return instance;
+    public static void init() {
+        if (instance == null) {
+            instance = new Assets();
+        }
     }
 
     /*
-     * helper function to match against all file extensions defined in "[Type]Extensions"
+     * helper function to match against all file extensions defined in
+     * "[Type]Extensions"
      */
     private static boolean endsWithAny(String value, String[] suffixes) {
         for (String suffix : suffixes) {
@@ -59,8 +66,7 @@ public final class Assets {
     /**
      * loads all assets located in [root]/assets/*"
      */
-    public void loadAssets() {
-
+    private void loadAssets() {
 
         // read the asset.txt generated from the gradle build
         FileHandle listFile = Gdx.files.internal("assets.txt");
@@ -68,16 +74,16 @@ public final class Assets {
         for (String rawLine : listFile.readString("UTF-8").split("\\r?\\n")) {
             String path = rawLine.trim();
 
-            if (path.startsWith("textures/") && endsWithAny(path, textureExtensions)) {
+            if (path.startsWith(TEXTURE_DIR) && endsWithAny(path, textureExtensions)) {
                 gdxAssets.load(path, Texture.class);
-            } else if (path.startsWith("sfx/") && endsWithAny(path, sfxExtensions)) {
+            } else if (path.startsWith(SFX_DIR) && endsWithAny(path, sfxExtensions)) {
                 gdxAssets.load(path, Sound.class);
-            } else if (path.startsWith("music/") && endsWithAny(path, musicExtensions)) {
+            } else if (path.startsWith(MUSIC_FIR) && endsWithAny(path, musicExtensions)) {
                 gdxAssets.load(path, Music.class);
-            } else if (path.startsWith("fonts/") && endsWithAny(path, fontExtensions)) {
+            } else if (path.startsWith(FONT_DIR) && endsWithAny(path, fontExtensions)) {
                 // TODO: fonts
             } else {
-                System.out.println("[warning] : unsupported asset : \"" + path + "\"");
+                System.out.println("[ASSETS : warning] : unsupported asset : \"" + path + "\"");
             }
             // TODO: support more asset types (?)
         }
@@ -86,22 +92,50 @@ public final class Assets {
     }
 
     /**
-     * Normalize the path to allow for both
-     * "sprite.png"
-     * "textures/sprite.png"
-     * to work
+     * cool way to get tuples in java
      */
-
-    public <T> T get(String fullPath, Class<T> type) {
-        if (gdxAssets.isLoaded(fullPath)) {
-            return gdxAssets.get(fullPath, type);
-        } else {
-            System.out.println("[warning] : unloaded asset requested : \"" + fullPath + "\"");
-            return null;
-        }
+    private record AssetSpec(String basePath, Class<?> expectedType) {
     }
 
-    public void dispose() {
-        gdxAssets.dispose();
+    /**
+     * resolves correct extension and type from file name
+     */
+    private static AssetSpec resolveSpec(String fileName) {
+        if (endsWithAny(fileName, textureExtensions)) {
+            return new AssetSpec(TEXTURE_DIR, Texture.class);
+        }
+        if (endsWithAny(fileName, sfxExtensions)) {
+            return new AssetSpec(SFX_DIR, Sound.class);
+        }
+        if (endsWithAny(fileName, musicExtensions)) {
+            return new AssetSpec(MUSIC_FIR, Music.class);
+        }
+        throw new IllegalArgumentException("[ASSETS] : unsupported asset extension for file: " + fileName);
+    }
+
+    /**
+     * getter for loaded assets:
+     * provide filename WITH extension and type
+     */
+    public static <T> T get(String file, Class<T> type) {
+        AssetSpec spec = resolveSpec(file);
+        if (!type.isAssignableFrom(spec.expectedType())) {
+            throw new IllegalArgumentException(
+                    "[ASSETS] Type mismatch for \"" + file + "\": expected " + spec.expectedType().getSimpleName()
+                            + ", got " + type.getSimpleName());
+        }
+
+        String fullPath = spec.basePath() + file;
+        if (!instance.gdxAssets.isLoaded(fullPath, type)) {
+            throw new IllegalStateException("[ASSETS] Asset not loaded: \"" + fullPath + "\"");
+        }
+
+        return instance.gdxAssets.get(fullPath, type);
+    }
+
+    public static void dispose() {
+        if (instance == null) {
+            instance.gdxAssets.dispose();
+        }
     }
 }
