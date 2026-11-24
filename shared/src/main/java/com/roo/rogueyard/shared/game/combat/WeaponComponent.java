@@ -11,8 +11,14 @@ import com.roo.rogueyard.shared.game.physics.TransformComponent;
  * Holds the parameters for a weapon.
  */
 public class WeaponComponent implements ComponentWithRequirements {
+    /** The cooldown for the weapon action in seconds. */
     public float cooldown;
+    /**
+     * If true the weapon continuously does its action while the input is held.
+     */
     public boolean autoRepeat;
+    /** The weapon action that is run when the weapon attacks. */
+    public WeaponAction action;
 
     public WeaponComponent() {
     }
@@ -20,8 +26,8 @@ public class WeaponComponent implements ComponentWithRequirements {
     @Override
     public List<Class<? extends Component>> requiredComponents() {
         return new RequiredComponentsBuilder()
-            .add(TransformComponent.class)
-            .add(BaseDamageComponent.class)
-            .build();
+                .add(TransformComponent.class)
+                .add(BaseDamageComponent.class)
+                .build();
     }
 }
