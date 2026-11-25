@@ -6,6 +6,7 @@ import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
+import com.roo.rogueyard.shared.game.player.PlayerEntity;
 
 import java.util.Map;
 
@@ -57,8 +58,11 @@ public class TrackingBehaviourSystem extends ECSSystemSingle<TrackingBehaviourCo
                         if (targetTrackingBehaviour.allegiance == trackingBehaviour.allegiance) {
                             continue;
                         }
+                    } else if (targetEntity.getClass() != PlayerEntity.class) {
+                        continue;
                     }
                     entity.addComponent(new HuntBehaviourComponent(targetEntity, 1f));
+                    break;
                 }
             }
         }

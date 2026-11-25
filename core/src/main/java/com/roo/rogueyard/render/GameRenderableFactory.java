@@ -33,8 +33,10 @@ public final class GameRenderableFactory {
                 return createPlayer(visual, entity);
             case VisualType.ENEMY:
                 return createEnemy(visual, entity);
+            case VisualType.DESCENDPOINT:
+                return createDescendPoint(visual, entity);
             default:
-                throw new RuntimeException("Unimplmented visual type.");
+                throw new RuntimeException("Unimplemented visual type.");
         }
     }
 
@@ -46,6 +48,11 @@ public final class GameRenderableFactory {
 
     private GameRenderable createEnemy(VisualComponent visual, Entity entity) {
         var sprite = new Sprite(loadTexture("bulker"));
+        return new GameRenderableEntity(sprite, entity);
+    }
+
+    private GameRenderable createDescendPoint(VisualComponent visual, Entity entity) {
+        var sprite = new Sprite(loadTexture("descend-point"));
         return new GameRenderableEntity(sprite, entity);
     }
 

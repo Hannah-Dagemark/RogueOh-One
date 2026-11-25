@@ -60,7 +60,7 @@ public class ImageWriter {
             for(int j=0;j<100;j++){
                 int x=(int)(iStart+i*((iEnd-iStart)/100));
                 int y=(int)(jStart+j*((jEnd-jStart)/100));
-                result[i][j]=0.5*(1+perlinNoise.getNoise(x,y)); /* Should be imported perlin noise function */
+                result[i][j]=0.5*(1/*+perlinNoise.getNoise(x,y)*/); /* Should be imported perlin noise function */
             }
         }
 

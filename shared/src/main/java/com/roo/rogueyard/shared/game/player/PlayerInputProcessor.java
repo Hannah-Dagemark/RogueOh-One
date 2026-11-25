@@ -38,6 +38,10 @@ public class PlayerInputProcessor extends InputAdapter {
                 player.sprint();
                 yield true;
             }
+            case Input.Keys.ENTER -> {
+                player.descendPlayer();
+                yield true;
+            }
             default -> false;
         };
     }

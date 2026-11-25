@@ -17,6 +17,7 @@ import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
+import com.roo.rogueyard.shared.game.world.WorldManager;
 
 /**
  * Holds the game state.
@@ -30,7 +31,8 @@ public final class GameModel {
     public GameModel() {
         initComponents();
         initSystems();
-        initEntities();
+        /*initEntities();*/
+        initWorld();
 
         player = PlayerFactory.createPlayer();
 
@@ -72,6 +74,12 @@ public final class GameModel {
         new VisualSystem(eventBus);
         new VelocitySystem();
         new VelocityFactorSystem();
+    }
+
+    private void initWorld() {
+        WorldManager.getInstance().setSeed(123456789);
+        WorldManager.getInstance().generateNewMap();
+        WorldManager.getInstance().initializeMap();
     }
 
     /**
