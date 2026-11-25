@@ -3,6 +3,9 @@ package com.roo.rogueyard.shared.game;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.combat.BaseDamageComponent;
+import com.roo.rogueyard.shared.game.combat.WeaponComponent;
+import com.roo.rogueyard.shared.game.combat.WeaponContext;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
@@ -12,6 +15,7 @@ import com.roo.rogueyard.shared.game.physics.PhysicsSystem;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
+import com.roo.rogueyard.shared.game.statemachine.StateMachineSystem;
 
 /**
  * Holds the game state.
@@ -44,6 +48,7 @@ public final class GameModel {
      */
     private void initComponents() {
         ComponentManager.getInstance().registerComponent(TransformComponent.class);
+        ComponentManager.getInstance().registerComponent(BaseDamageComponent.class);
     }
 
     /**
@@ -57,6 +62,7 @@ public final class GameModel {
         new TrackingBehaviourSystem();
         new HuntBehaviourSystem();
         new VelocitySystem();
+        new StateMachineSystem<>(WeaponComponent.class, WeaponComponent.graphRegistry());
         new VisualSystem(eventBus);
     }
 
