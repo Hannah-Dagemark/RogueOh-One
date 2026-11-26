@@ -1,5 +1,7 @@
 package com.roo.rogueyard.shared.game.world;
 
+import com.roo.rogueyard.shared.engine.utils.PseudoSeed;
+
 public final class WorldManager {
     private static final WorldManager instance = new WorldManager();
 
@@ -29,7 +31,9 @@ public final class WorldManager {
 
     public void newGamePlus() {
         currentMapSize += 20;
+        currentMap.getCurrentLayer().clearLayer();
         generateNewMap();
+        initializeMap();
     }
 
     public WalkableLayer currentLayer() {

@@ -1,4 +1,4 @@
-package com.roo.rogueyard.shared.game.world.utils;
+package com.roo.rogueyard.shared.engine.utils;
 // Source - https://stackoverflow.com/a/17489575
 // Posted by Richard Tingle, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-11-24, License - CC BY-SA 3.0
@@ -54,13 +54,23 @@ public class ImageWriter {
         double jStart=0;
         double jEnd=500;
 
-        double[][] result=new double[100][100];
+        int width = 750;
+        int height = 750;
+        double distanceTaper = 7;
 
-        for(int i=0;i<100;i++){
-            for(int j=0;j<100;j++){
-                int x=(int)(iStart+i*((iEnd-iStart)/100));
-                int y=(int)(jStart+j*((jEnd-jStart)/100));
-                result[i][j]=0.5*(1/*+perlinNoise.getNoise(x,y)*/); /* Should be imported perlin noise function */
+        double[][] result=new double[width][height];
+
+        double scaleFactor = 60;
+
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                double iF = ((double)i / width)-0.5;
+                double jF = ((double)j / height)-0.5;
+                double distanceSquared = Math.max(iF*iF + jF*jF - 0.05, 0);
+                double x=(iStart+i*((iEnd-iStart)/(width*scaleFactor)));
+                double y=(jStart+j*((jEnd-jStart)/(height*scaleFactor)));
+                result[i][j]=((SimplexNoise.noise(x,y, 51515)) + distanceSquared*distanceTaper > 0.25 ? 1 : 0);
+
             }
         }
 
