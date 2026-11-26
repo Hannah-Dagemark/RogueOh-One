@@ -9,7 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -37,7 +37,16 @@ public final class Assets {
     private static String FONT_DIR = "fonts/";
 
     // which sizes a font should generate
-    private static int[] FONT_SIZES = { 8, 12, 16, 20, 24, 36, 48 };
+    public enum FontSize { // NOTE: sizes subject to change
+        SMALL(12),
+        MEDIUM(18),
+        BIG(36);
+
+        private int pxSize;
+        private FontSize(int size) {
+            this.pxSize =  size;
+        }
+    }
 
     private Assets() {
         // setup font loading
@@ -89,11 +98,11 @@ public final class Assets {
             } else if (path.startsWith(MUSIC_DIR) && endsWithAny(path, AUDIO_EXT)) {
                 gdxAssets.load(path, Music.class);
             } else if (path.startsWith(FONT_DIR) && endsWithAny(path, FONT_EXT)) {
-                FreeTypeFontLoaderParameter fontParams = new FreeTypeFontLoaderParameter();
-                for (int fontSize : FONT_SIZES) {
+                for (FontSize font : FontSize.values()) {
+                    FreeTypeFontLoaderParameter fontParams = new FreeTypeFontLoaderParameter();
                     fontParams.fontFileName = path; // the file that exists in assets/fonts/
-                    fontParams.fontParameters.size = fontSize;
-                    gdxAssets.load(baseNameNoExtension(path) + fontSize + ".ttf", BitmapFont.class, fontParams);
+                    fontParams.fontParameters.size = font.pxSize;
+                    gdxAssets.load(baseNameNoExtension(path) + "_" + font.pxSize + ".ttf", BitmapFont.class, fontParams);
                 }
             } else {
                 System.out.println("[ASSETS : warning] : unsupported asset : \"" + path + "\"");
@@ -119,8 +128,9 @@ public final class Assets {
         return get(fullPath, Music.class);
     }
 
-    public static BitmapFont getFont(String file) {
-        return get(file, BitmapFont.class); // this is different because how font loading works
+    public static BitmapFont getFont(String file, FontSize size) {
+        String internalFile = baseNameNoExtension(file) + "_" + size.pxSize + ".ttf";
+        return get(internalFile, BitmapFont.class);
     }
 
     private static <T> T get(String fullPath, Class<T> type) {
