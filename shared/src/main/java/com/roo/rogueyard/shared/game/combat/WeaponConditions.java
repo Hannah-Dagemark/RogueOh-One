@@ -7,7 +7,7 @@ final class WeaponConditions {
         return c -> c.timeInState() >= seconds;
     }
 
-    public static Condition<WeaponContext> cooldown(float seconds) {
+    public static Condition<WeaponContext> cooldown() {
         return c -> c.timeInState() >= c.cooldown;
     }
 }

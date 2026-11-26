@@ -34,18 +34,43 @@ class GraphBundle<T extends StateMachineContext> {
         return initialGraph;
     }
 
-    /** The next transition valid for the given context. */
-    Transition<T> nextTransition(T ctx) {
-        for (Transition<T> transition : fromAnyTransitions()) {
-            if (transition.matches(ctx)) {
-                return transition;
-            }
+    /**
+     * Update the given context according to this graph bundles transitions.
+     * The value dt is the delta time in seconds.
+     */
+    void update(T ctx, float dt) {
+        ctx.setTimeInState(ctx.timeInState() + dt);
+
+        if (ctx.graphRef() == null) {
+            ctx.setGraphRef(initialGraph());
         }
 
-        var graph = get(ctx.graphRef());
-        var stateDefinition = graph.get(ctx.state());
+        Graph<T> graph = get(ctx.graphRef());
 
-        for (Transition<T> transition : stateDefinition.transitions()) {
+        var transition = nextTransition(ctx);
+        if (transition == null) {
+            graph.update(ctx);
+            return;
+        }
+
+        var from = graph.get(ctx.state());
+        Action.executeAll(from.onExit(), ctx);
+
+        if (transition.action() != null) {
+            transition.action().execute(ctx);
+        }
+
+        ctx.setTimeInState(0);
+
+        ctx.setGraphRef(transition.target().asGraphRef());
+    }
+
+    /**
+     * The next transition valid for the given context. Only includes from any
+     * transitions.
+     */
+    private Transition<T> nextTransition(T ctx) {
+        for (Transition<T> transition : fromAnyTransitions()) {
             if (transition.matches(ctx)) {
                 return transition;
             }

@@ -44,11 +44,11 @@ public class WeaponFactory {
         State swing = mainBuilder.createState();
 
         mainBuilder.define(idle)
-                .transition(WeaponConditions.timeInState(0.5f), swing,
+                .transition(WeaponConditions.cooldown(), swing,
                         a -> System.out.println("-> Shoot"));
 
         mainBuilder.define(swing)
-                .transition(WeaponConditions.timeInState(0.5f), idle,
+                .transition(c -> true, idle,
                         a -> System.out.println("-> Idle"));
 
         mainBuilder.initial(idle);

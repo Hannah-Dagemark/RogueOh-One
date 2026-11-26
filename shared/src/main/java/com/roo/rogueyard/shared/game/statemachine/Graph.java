@@ -2,6 +2,8 @@ package com.roo.rogueyard.shared.game.statemachine;
 
 import java.util.List;
 
+import com.roo.rogueyard.shared.game.statemachine.Target.Type;
+
 /**
  * Represents a set of states and transitions between them.
  */
@@ -39,8 +41,39 @@ class Graph<T extends StateMachineContext> {
         return initialState;
     }
 
+    /** Update the given context according to this graphs transitions. */
+    void update(T ctx) {
+        if (ctx.state() == null) {
+            ctx.setState(initialState());
+        }
+
+        var transition = nextTransition(ctx);
+        if (transition == null) {
+            return;
+        }
+
+        var from = get(ctx.state());
+        Action.executeAll(from.onExit(), ctx);
+
+        if (transition.action() != null) {
+            transition.action().execute(ctx);
+        }
+
+        ctx.setTimeInState(0);
+
+        if (transition.target().type() == Type.STATE) {
+            var targetState = transition.target().asState();
+
+            ctx.setState(targetState);
+
+            Action.executeAll(get(targetState).onEnter(), ctx);
+        } else {
+            ctx.setGraphRef(transition.target().asGraphRef());
+        }
+    }
+
     /** The next transition valid for the given context. */
-    Transition<T> nextTransition(T ctx) {
+    private Transition<T> nextTransition(T ctx) {
         for (Transition<T> transition : fromAnyTransitions()) {
             if (transition.matches(ctx)) {
                 return transition;
