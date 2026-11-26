@@ -1,12 +1,14 @@
 package com.roo.rogueyard.shared.game.combat;
 
-import com.roo.rogueyard.shared.game.statemachine.GraphId;
+import com.roo.rogueyard.shared.game.statemachine.GraphBundleRef;
+import com.roo.rogueyard.shared.game.statemachine.GraphRef;
 import com.roo.rogueyard.shared.game.statemachine.State;
 import com.roo.rogueyard.shared.game.statemachine.StateMachineContext;
 
 public class WeaponContext implements StateMachineContext {
+    private GraphBundleRef graphBundleRef;
+    private GraphRef graphRef;
     private State state;
-    private GraphId graphId;
 
     private float timeInState = 0;
 
@@ -17,11 +19,27 @@ public class WeaponContext implements StateMachineContext {
      */
     public boolean autoRepeat;
 
-    public WeaponContext(State state, GraphId graphId, float cooldown, boolean autoRepeat) {
-        this.state = state;
-        this.graphId = graphId;
+    public WeaponContext(GraphBundleRef graphBundleRef, float cooldown, boolean autoRepeat) {
+        this.graphBundleRef = graphBundleRef;
+        this.graphRef = null;
+        this.state = null;
         this.cooldown = cooldown;
         this.autoRepeat = autoRepeat;
+    }
+
+    @Override
+    public GraphBundleRef graphBundleRef() {
+        return graphBundleRef;
+    }
+
+    @Override
+    public GraphRef graphRef() {
+        return graphRef;
+    }
+
+    @Override
+    public void setGraphRef(GraphRef graphRef) {
+        this.graphRef = graphRef;
     }
 
     @Override
@@ -32,16 +50,6 @@ public class WeaponContext implements StateMachineContext {
     @Override
     public void setState(State state) {
         this.state = state;
-    }
-
-    @Override
-    public GraphId graphId() {
-        return graphId;
-    }
-
-    @Override
-    public void setGraphId(GraphId graphId) {
-        this.graphId = graphId;
     }
 
     @Override

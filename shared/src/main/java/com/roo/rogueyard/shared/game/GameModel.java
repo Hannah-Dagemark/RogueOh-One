@@ -5,7 +5,7 @@ import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.combat.BaseDamageComponent;
 import com.roo.rogueyard.shared.game.combat.WeaponComponent;
-import com.roo.rogueyard.shared.game.combat.WeaponContext;
+import com.roo.rogueyard.shared.game.combat.WeaponFactory;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
@@ -26,20 +26,24 @@ public final class GameModel {
     private Entity player;
     private Entity[] enemies;
 
+    private WeaponFactory weaponFactory;
+
     public GameModel() {
         initComponents();
         initSystems();
+        initFactories();
         initEntities();
     }
 
     private void initEntities() {
         player = PlayerFactory.createPlayer();
+        weaponFactory.createBasicGun();
 
-        EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
+        /* EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
         enemies = new Entity[3];
         for (int i = 0; i <= 2; i++) {
             enemies[i] = enemyFactory.createNPC();
-        }
+        }*/
     }
 
     /**
@@ -62,8 +66,13 @@ public final class GameModel {
         new TrackingBehaviourSystem();
         new HuntBehaviourSystem();
         new VelocitySystem();
-        new StateMachineSystem<>(WeaponComponent.class, WeaponComponent.graphRegistry());
+        new StateMachineSystem<>(WeaponComponent.class);
         new VisualSystem(eventBus);
+    }
+
+    /** Creates all factories. */
+    private void initFactories() {
+        weaponFactory = new WeaponFactory();
     }
 
     /**
