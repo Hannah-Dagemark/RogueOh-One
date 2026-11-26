@@ -119,6 +119,10 @@ public final class Assets {
         return get(fullPath, Music.class);
     }
 
+    public static BitmapFont getFont(String file) {
+        return get(file, BitmapFont.class); // this is different because how font loading works
+    }
+
     private static <T> T get(String fullPath, Class<T> type) {
         if (instance == null) {
             throw new IllegalStateException("[ASSETS] Asset manager not initialized");
