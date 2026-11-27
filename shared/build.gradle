@@ -1,6 +1,8 @@
 eclipse.project.name = appName + '-shared'
 
 dependencies {
+  // JNoise Library
+  implementation("de.articdive:jnoise-pipeline:4.1.0")
   testImplementation 'org.junit.jupiter:junit-jupiter:6.2.0-M1'
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.2.0-M1'
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

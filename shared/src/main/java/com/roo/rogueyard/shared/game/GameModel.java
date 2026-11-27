@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.engine.utils.seed.PseudoSeed;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
@@ -17,6 +18,7 @@ import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
+import com.roo.rogueyard.shared.game.world.WorldManager;
 
 /**
  * Holds the game state.
@@ -26,11 +28,14 @@ public final class GameModel {
 
     private Entity[] enemies;
     private final PlayerEntity player;
+    private final PseudoSeed seed;
 
     public GameModel() {
+        seed = new PseudoSeed(12345);
         initComponents();
         initSystems();
-        initEntities();
+        /*initEntities();*/
+        initWorld();
 
         player = PlayerFactory.createPlayer();
 
@@ -72,6 +77,12 @@ public final class GameModel {
         new VisualSystem(eventBus);
         new VelocitySystem();
         new VelocityFactorSystem();
+    }
+
+    private void initWorld() {
+        WorldManager.getInstance().setSeed(seed);
+        WorldManager.getInstance().generateNewMap();
+        WorldManager.getInstance().initializeMap();
     }
 
     /**

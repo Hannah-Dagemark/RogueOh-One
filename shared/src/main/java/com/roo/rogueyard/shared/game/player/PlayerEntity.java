@@ -5,6 +5,8 @@ import com.roo.rogueyard.shared.game.DirectionType;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityFactorComponent;
+import com.roo.rogueyard.shared.game.world.entities.DescendPointEntity;
+import com.roo.rogueyard.shared.game.world.WorldManager;
 
 /**
  * Core Player variant of the Entity class. This class holds the functionality unique to player characters, currently being controlled by users.
@@ -34,6 +36,18 @@ public class PlayerEntity extends Entity {
      */
     public void stopSprint() {
         this.getComponent(VelocityFactorComponent.class).additiveFactorSources.remove("sprint");
+    }
+
+    public boolean descendPlayer () {
+       DescendPointEntity[] descendPoints = WorldManager.getInstance().currentLayer().getDescendPoints();
+       for (DescendPointEntity descendPoint : descendPoints) {
+           float distance = new Vector2(descendPoint.getComponent(TransformComponent.class).position).sub(this.getComponent(TransformComponent.class).position).len();
+           if ( distance < 100 ) {
+               descendPoint.map.descendLayer();
+               return true;
+           }
+       }
+       return false;
     }
 
     /**

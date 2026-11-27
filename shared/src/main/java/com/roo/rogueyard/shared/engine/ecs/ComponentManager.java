@@ -129,7 +129,13 @@ public final class ComponentManager {
      */
     public void removeAllComponents(Entity entity) {
         for (var components : componentMaps.values()) {
-            components.remove(entity);
+            var removed = components.remove(entity);
+            if (removed != null) {
+                for (var componentListener : componentRemovedListeners) {
+                    componentListener.onComponentRemoved(entity, removed.getClass());
+                }
+            }
+
         }
     }
 
