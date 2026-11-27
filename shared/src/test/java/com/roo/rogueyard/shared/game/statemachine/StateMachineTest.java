@@ -9,24 +9,20 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createBasicTransitionGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var first = main.newState();
+        var second = main.newState();
 
-        State first = mainBuilder.createState();
-        State second = mainBuilder.createState();
+        first.transition(c -> true, second);
 
-        mainBuilder.define(first)
-                .transition(c -> true, second);
+        second.transition(c -> true, first, ctx -> ctx.setPassed(true));
 
-        mainBuilder.define(second)
-                .transition(c -> true, first, ctx -> ctx.setPassed(true));
-
-        mainBuilder.initial(first);
+        main.initial(first);
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -37,9 +33,6 @@ class StateMachineTest {
                 .getInstance().get(ctx.graphBundleRef());
 
         graphBundle.update(ctx, 0);
-
-        assertEquals(false, ctx.passed());
-
         graphBundle.update(ctx, 0);
 
         assertEquals(true, ctx.passed());
@@ -48,38 +41,33 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createGraphTransitionGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
-        GraphRef secondary = builder.createGraph();
+        var main = builder.newGraph();
+        var secondary = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var mainFirst = main.newState();
+        var mainSecond = main.newState();
 
-        State mainFirst = mainBuilder.createState();
-        State mainSecond = mainBuilder.createState();
+        mainFirst.transition(c -> true, mainSecond);
 
-        mainBuilder.define(mainFirst)
-                .transition(c -> true, mainSecond);
+        mainSecond.transition(c -> true, secondary);
 
-        mainBuilder.define(mainSecond)
-                .transition(c -> true, secondary);
+        main.initial(mainFirst);
 
-        mainBuilder.initial(mainFirst);
+        var secondaryFirst = secondary.newState();
+        var secondarySecond = secondary.newState();
 
-        GraphBuilder<TestContext> secondaryBuilder = builder.define(secondary);
+        secondaryFirst.transition(c -> true, secondarySecond);
 
-        State secondaryFirst = secondaryBuilder.createState();
-        State secondarySecond = secondaryBuilder.createState();
+        secondarySecond.transition(
+                c -> true,
+                secondaryFirst,
+                ctx -> ctx.setPassed(true));
 
-        secondaryBuilder.define(secondaryFirst)
-                .transition(c -> true, secondarySecond);
-
-        secondaryBuilder.define(secondarySecond)
-                .transition(c -> true, secondaryFirst, ctx -> ctx.setPassed(true));
-
-        secondaryBuilder.initial(secondaryFirst);
+        secondary.initial(secondaryFirst);
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -100,24 +88,20 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createOnEnterGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var first = main.newState();
+        var second = main.newState();
 
-        State first = mainBuilder.createState();
-        State second = mainBuilder.createState();
+        first.transition(c -> true, second);
 
-        mainBuilder.define(first)
-                .transition(c -> true, second);
+        second.onEnter(ctx -> ctx.setPassed(true));
 
-        mainBuilder.define(second)
-                .onEnter(ctx -> ctx.setPassed(true));
-
-        mainBuilder.initial(first);
+        main.initial(first);
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -135,22 +119,20 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createOnExitGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var first = main.newState();
+        var second = main.newState();
 
-        State first = mainBuilder.createState();
-        State second = mainBuilder.createState();
-
-        mainBuilder.define(first)
+        first
                 .onExit(ctx -> ctx.setPassed(true))
                 .transition(c -> true, second);
 
-        mainBuilder.initial(first);
+        main.initial(first);
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -168,22 +150,19 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createFromAnyGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var first = main.newState();
+        var second = main.newState();
 
-        State first = mainBuilder.createState();
-        State second = mainBuilder.createState();
-
-        mainBuilder.define(first);
-
-        mainBuilder
+        main
                 .initial(first)
-                .transitionFromAny(c -> true, second, ctx -> ctx.setPassed(true));
+                .transitionFromAny(
+                        c -> true, second, ctx -> ctx.setPassed(true));
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -201,30 +180,28 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createFromAnyToGraphGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
-        GraphRef secondary = builder.createGraph();
+        var main = builder.newGraph();
+        var secondary = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var mainFirst = main.newState();
 
-        State mainFirst = mainBuilder.createState();
-
-        mainBuilder
+        main
                 .initial(mainFirst)
                 .transitionFromAny(c -> true, secondary);
 
-        GraphBuilder<TestContext> secondaryBuilder = builder.define(secondary);
+        var secondaryFirst = secondary.newState();
+        var secondarySecond = secondary.newState();
 
-        State secondaryFirst = secondaryBuilder.createState();
-        State secondarySecond = secondaryBuilder.createState();
+        secondaryFirst.transition(
+                c -> true,
+                secondarySecond,
+                ctx -> ctx.setPassed(true));
 
-        secondaryBuilder.define(secondaryFirst)
-                .transition(c -> true, secondarySecond, ctx -> ctx.setPassed(true));
-
-        secondaryBuilder.initial(secondaryFirst);
+        secondary.initial(secondaryFirst);
 
         return builder
                 .initial(main)
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -243,25 +220,21 @@ class StateMachineTest {
     private GraphBundleRef<TestContext> createGraphFromAnyGraphBundle() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
-        GraphRef secondary = builder.createGraph();
+        var main = builder.newGraph();
+        var secondary = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        var mainFirst = main.newState();
 
-        State mainFirst = mainBuilder.createState();
+        main.initial(mainFirst);
 
-        mainBuilder.initial(mainFirst);
+        var secondaryFirst = secondary.newState();
 
-        GraphBuilder<TestContext> secondaryBuilder = builder.define(secondary);
-
-        State secondaryFirst = secondaryBuilder.createState();
-
-        secondaryBuilder.initial(secondaryFirst);
+        secondary.initial(secondaryFirst);
 
         return builder
                 .initial(main)
                 .transitionFromAny(c -> true, secondary, ctx -> ctx.setPassed(true))
-                .build(TestContext.class);
+                .build();
     }
 
     @Test
@@ -281,30 +254,25 @@ class StateMachineTest {
     void missingInitialStateTest() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
-
-        mainBuilder.createState();
+        main.newState();
 
         assertThrows(IllegalStateException.class,
                 () -> builder
                         .initial(main)
-                        .build(TestContext.class));
+                        .build());
     }
 
     @Test
     void missingInitialGraphTest() {
         var builder = new GraphBundleBuilder<TestContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<TestContext> mainBuilder = builder.define(main);
+        main.newState();
 
-        mainBuilder.createState();
-
-        assertThrows(IllegalStateException.class,
-                () -> builder.build(TestContext.class));
+        assertThrows(IllegalStateException.class, () -> builder.build());
     }
 
     /** Minimal context used for testing. */

@@ -12,6 +12,15 @@ class Graph<T extends StateMachineContext<T>> {
     private final List<Transition<T>> fromAnyTransitions;
     private final State initialState;
 
+    /**
+     * Creates a graph.
+     *
+     * @param stateDefinitions   Definitions of all states in the graph.
+     * @param fromAnyTransitions The transitions that can trigger from any
+     *                           state in the graph.
+     * @param initialState       The initial state a you start as when
+     *                           entering this graph.
+     */
     Graph(
             List<StateDefinition<T>> stateDefinitions,
             List<Transition<T>> fromAnyTransitions,
@@ -31,7 +40,7 @@ class Graph<T extends StateMachineContext<T>> {
         return stateDefinitions;
     }
 
-    /** Transitions that can be triggered when in any state. */
+    /** Transitions that can trigger from any state in this graph. */
     List<Transition<T>> fromAnyTransitions() {
         return fromAnyTransitions;
     }

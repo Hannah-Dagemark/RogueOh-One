@@ -5,11 +5,8 @@ import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.engine.ecs.EntityManager;
 import com.roo.rogueyard.shared.game.DamageTypes;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
-import com.roo.rogueyard.shared.game.statemachine.GraphBuilder;
 import com.roo.rogueyard.shared.game.statemachine.GraphBundleBuilder;
 import com.roo.rogueyard.shared.game.statemachine.GraphBundleRef;
-import com.roo.rogueyard.shared.game.statemachine.GraphRef;
-import com.roo.rogueyard.shared.game.statemachine.State;
 
 public class WeaponFactory {
     private GraphBundleRef<WeaponContext> basicGunGraphBundleRef;
@@ -38,25 +35,21 @@ public class WeaponFactory {
     private void initBasicGunGraphBundle() {
         var builder = new GraphBundleBuilder<WeaponContext>();
 
-        GraphRef main = builder.createGraph();
+        var main = builder.newGraph();
 
-        GraphBuilder<WeaponContext> mainBuilder = builder.define(main);
+        var idle = main.newState();
+        var swing = main.newState();
 
-        State idle = mainBuilder.createState();
-        State swing = mainBuilder.createState();
+        idle.transition(WeaponConditions.cooldown(), swing,
+                ctx -> System.out.println("-> Shoot"));
 
-        mainBuilder.define(idle)
-                .transition(WeaponConditions.cooldown(), swing,
-                        ctx -> System.out.println("-> Shoot"));
+        swing.transition(c -> true, idle,
+                ctx -> System.out.println("-> Idle"));
 
-        mainBuilder.define(swing)
-                .transition(c -> true, idle,
-                        ctx -> System.out.println("-> Idle"));
-
-        mainBuilder.initial(idle);
+        main.initial(idle);
 
         basicGunGraphBundleRef = builder
                 .initial(main)
-                .build(WeaponContext.class);
+                .build();
     }
 }

@@ -7,9 +7,10 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface Action<T extends StateMachineContext<T>> {
+    /** Run this action. */
     void execute(T ctx);
 
-    /** Execute all given actions. */
+    /** Executes all the given actions. */
     static <T extends StateMachineContext<T>> void executeAll(List<Action<T>> actions, T ctx) {
         for (var action : actions) {
             action.execute(ctx);

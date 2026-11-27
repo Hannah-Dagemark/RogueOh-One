@@ -10,6 +10,15 @@ class GraphBundle<T extends StateMachineContext<T>> {
     private final List<Transition<T>> fromAnyTransitions;
     private final GraphRef initialGraph;
 
+    /**
+     * Creates a graph bundle.
+     *
+     * @param graphs             The graphs in the bundle.
+     * @param fromAnyTransitions The transitions that can trigger from any
+     *                           graph in the bundle.
+     * @param initialGraph       The initial graph a you start as when
+     *                           entering this graph bundle.
+     */
     GraphBundle(
             List<Graph<T>> graphs,
             List<Transition<T>> fromAnyTransitions,
@@ -24,12 +33,12 @@ class GraphBundle<T extends StateMachineContext<T>> {
         return graphs.get(graphRef.id());
     }
 
-    /** Transitions that can be triggered when in any graph. */
+    /** Transitions that can be triggered from any graph in this bundle. */
     List<Transition<T>> fromAnyTransitions() {
         return fromAnyTransitions;
     }
 
-    /** The initial graph a you start as when entering this graph. */
+    /** The initial graph a you start as when entering this graph bundle. */
     GraphRef initialGraph() {
         return initialGraph;
     }

@@ -21,8 +21,8 @@ class GraphBundleManager {
     /**
      * Adds a new graph bundle to this manager and returns a reference to it.
      */
-    <T extends StateMachineContext<T>> GraphBundleRef<T> register(GraphBundle<T> graphBundle, Class<T> ctxType) {
-        var graphBundleRef = new GraphBundleRef<T>(graphBundles.size(), ctxType);
+    <T extends StateMachineContext<T>> GraphBundleRef<T> register(GraphBundle<T> graphBundle) {
+        var graphBundleRef = new GraphBundleRef<T>(graphBundles.size());
         graphBundles.add(graphBundle);
         return graphBundleRef;
     }

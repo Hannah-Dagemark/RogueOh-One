@@ -5,25 +5,14 @@ package com.roo.rogueyard.shared.game.statemachine;
  */
 public class GraphBundleRef<T extends StateMachineContext<T>> {
     private final int id;
-    private final Class<T> ctxType;
 
-    /**
-     * Creates a graph bundle reference with the given id and context type.
-     * The context type should be the same as for GraphBundle this is
-     * referencing.
-     */
-    GraphBundleRef(int id, Class<T> ctxType) {
+    /** Creates a graph bundle reference with the given id. */
+    GraphBundleRef(int id) {
         this.id = id;
-        this.ctxType = ctxType;
     }
 
     /** The id of the graph bundle. */
     int id() {
         return id;
-    }
-
-    /** The context type of the graph bundle. */
-    public Class<T> ctxType() {
-        return ctxType;
     }
 }

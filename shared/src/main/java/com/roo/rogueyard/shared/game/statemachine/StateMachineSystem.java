@@ -5,7 +5,8 @@ import com.roo.rogueyard.shared.engine.ecs.ECSSystemSingle;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 
 /**
- * Updates all state machine components of type C.
+ * Updates all state machine components of type C. T is the type of
+ * StateMachineContext used by the state machine component.
  */
 public class StateMachineSystem<C extends StateMachineComponent<T>, T extends StateMachineContext<T>>
         extends ECSSystemSingle<C> {

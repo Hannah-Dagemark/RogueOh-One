@@ -39,11 +39,11 @@ public final class GameModel {
         player = PlayerFactory.createPlayer();
         weaponFactory.createBasicGun();
 
-        /* EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
+        EnemyNpcFactory enemyFactory = new EnemyNpcFactory();
         enemies = new Entity[3];
         for (int i = 0; i <= 2; i++) {
             enemies[i] = enemyFactory.createNPC();
-        }*/
+        }
     }
 
     /**

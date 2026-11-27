@@ -11,82 +11,104 @@ import com.roo.rogueyard.shared.game.statemachine.Target.Type;
 public final class GraphBuilder<T extends StateMachineContext<T>> {
     private final List<StateDefinitionBuilder<T>> stateDefinitions = new ArrayList<>();
     private final List<Transition<T>> fromAnyTransitions = new ArrayList<>();
+    private final GraphRef graphRef;
+
     private State initialState;
 
-    GraphBuilder() {
+    /**
+     * Create a new graph builder.
+     *
+     * @param graphRef The graph this builder defines.
+     */
+    GraphBuilder(GraphRef graphRef) {
+        this.graphRef = graphRef;
     }
 
-    /** Creates a new state definition and returns its corresponding state. */
-    public State createState() {
+    /** The graph this builder is defining. */
+    GraphRef graphRef() {
+        return graphRef;
+    }
+
+    /** Creates a new state and returns a builder used to define it. */
+    public StateDefinitionBuilder<T> newState() {
         State state = new State(stateDefinitions.size());
-        stateDefinitions.add(new StateDefinitionBuilder<>());
-        return state;
+        var builder = new StateDefinitionBuilder<T>(state);
+        stateDefinitions.add(builder);
+        return builder;
     }
 
     /**
-     * Returns a state definition builder that can be used to define the
-     * given state.
-     */
-    public StateDefinitionBuilder<T> define(State state) {
-        return stateDefinitions.get(state.id());
-    }
-
-    /**
-     * Adds a transition that can trigger from any state. When the condition is
-     * true the state changes to the target and the onTrigger action is executed.
+     * Adds a transition that can trigger from any state in this graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The state the transition is going to.
+     * @param onTrigger The action exectued when the transition is triggered.
      */
     public GraphBuilder<T> transitionFromAny(
             Condition<T> condition,
-            State target,
+            StateDefinitionBuilder<T> target,
             Action<T> onTrigger) {
         fromAnyTransitions.add(
-                new Transition<>(condition, new Target(target), onTrigger));
+                new Transition<>(condition, new Target(target.state()), onTrigger));
         return this;
     }
 
     /**
-     * Adds a transition that can trigger from any state. When the condition is
-     * true the graph changes to the target and the onTrigger action is executed.
+     * Adds a transition that can trigger from any state in this graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The state the transition is going to.
      */
     public GraphBuilder<T> transitionFromAny(
             Condition<T> condition,
-            GraphRef target,
+            StateDefinitionBuilder<T> target) {
+        fromAnyTransitions.add(new Transition<>(
+                condition,
+                new Target(target.state()),
+                null));
+        return this;
+    }
+
+    /**
+     * Adds a transition that can trigger from any state in this graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The graph the transition is going to.
+     * @param onTrigger The action exectued when the transition is triggered.
+     */
+    public GraphBuilder<T> transitionFromAny(
+            Condition<T> condition,
+            GraphBuilder<T> target,
             Action<T> onTrigger) {
-        fromAnyTransitions.add(
-                new Transition<>(condition, new Target(target), onTrigger));
+        fromAnyTransitions.add(new Transition<>(
+                condition,
+                new Target(target.graphRef()),
+                onTrigger));
         return this;
     }
 
     /**
-     * Adds a transition that can trigger from any state. When the condition is
-     * true the state changes to the target.
+     * Adds a transition that can trigger from any state in this graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The graph the transition is going to.
      */
     public GraphBuilder<T> transitionFromAny(
             Condition<T> condition,
-            State target) {
-        fromAnyTransitions.add(
-                new Transition<>(condition, new Target(target), null));
-        return this;
-    }
-
-    /**
-     * Adds a transition that can trigger from any state. When the condition is
-     * true the graph changes to the target.
-     */
-    public GraphBuilder<T> transitionFromAny(
-            Condition<T> condition,
-            GraphRef target) {
-        fromAnyTransitions.add(
-                new Transition<>(condition, new Target(target), null));
+            GraphBuilder<T> target) {
+        fromAnyTransitions.add(new Transition<>(
+                condition,
+                new Target(target.graphRef()),
+                null));
         return this;
     }
 
     /** Sets the initial state for the graph. */
-    public GraphBuilder<T> initial(State state) {
+    public GraphBuilder<T> initial(StateDefinitionBuilder<T> state) {
         if (initialState != null) {
             throw new IllegalStateException("Cannot set initial state twice.");
         }
-        initialState = state;
+        initialState = state.state();
         return this;
     }
 

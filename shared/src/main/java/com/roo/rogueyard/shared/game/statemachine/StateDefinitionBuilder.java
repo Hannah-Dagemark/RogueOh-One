@@ -10,18 +10,30 @@ public final class StateDefinitionBuilder<T extends StateMachineContext<T>> {
     private final List<Action<T>> onEnters = new ArrayList<>();
     private final List<Action<T>> onExits = new ArrayList<>();
     private final List<Transition<T>> transitions = new ArrayList<>();
+    private final State state;
 
-    StateDefinitionBuilder() {
+    /**
+     * Create a new state definition builder.
+     *
+     * @param state The state this builder defines.
+     */
+    StateDefinitionBuilder(State state) {
+        this.state = state;
     }
 
-    /** Adds all given actions that should be executed when entering this state. */
+    /** The state this builder is defining. */
+    State state() {
+        return state;
+    }
+
+    /** Makes all given actions executed when entering this state. */
     @SafeVarargs
     public final StateDefinitionBuilder<T> onEnter(Action<T>... a) {
         onEnters.addAll(List.of(a));
         return this;
     }
 
-    /** Adds all given actions that should executed when exiting this state. */
+    /** Makes all given actions executed when exiting this state. */
     @SafeVarargs
     public final StateDefinitionBuilder<T> onExit(Action<T>... a) {
         onExits.addAll(List.of(a));
@@ -29,28 +41,37 @@ public final class StateDefinitionBuilder<T extends StateMachineContext<T>> {
     }
 
     /**
-     * Define a new transition. When condition is true changes the state to
-     * target and executes onTrigger.
+     * Adds a transition from this state to any other in the same graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The state the transition is going to.
+     * @param onTrigger The action exectued when the transition is triggered.
      */
-    public final StateDefinitionBuilder<T> transition(
+    public StateDefinitionBuilder<T> transition(
             Condition<T> condition,
-            State target,
+            StateDefinitionBuilder<T> target,
             Action<T> onTrigger) {
-        transitions.add(
-                new Transition<>(condition, new Target(target), onTrigger));
+        transitions.add(new Transition<>(
+                condition,
+                new Target(target.state()),
+                onTrigger));
         return this;
     }
 
     /**
-     * Define a new transition. When condition is true changes the graph to
-     * target and executes onTrigger.
+     * Adds a transition from this state to any other in the same graph.
+     *
+     * @param condition The condition the transition will trigger upon.
+     * @param target    The state the transition is going to.
      */
-    public final StateDefinitionBuilder<T> transition(
+    public StateDefinitionBuilder<T> transition(
             Condition<T> condition,
-            GraphRef target,
+            GraphBuilder<T> target,
             Action<T> onTrigger) {
-        transitions.add(
-                new Transition<>(condition, new Target(target), onTrigger));
+        transitions.add(new Transition<>(
+                condition,
+                new Target(target.graphRef()),
+                onTrigger));
         return this;
     }
 
@@ -58,10 +79,13 @@ public final class StateDefinitionBuilder<T extends StateMachineContext<T>> {
      * Define a new transition. When condition is true changes the state to
      * target.
      */
-    public final StateDefinitionBuilder<T> transition(
+    public StateDefinitionBuilder<T> transition(
             Condition<T> condition,
-            State target) {
-        transitions.add(new Transition<>(condition, new Target(target), null));
+            StateDefinitionBuilder<T> target) {
+        transitions.add(new Transition<>(
+                condition,
+                new Target(target.state()),
+                null));
         return this;
     }
 
@@ -69,15 +93,18 @@ public final class StateDefinitionBuilder<T extends StateMachineContext<T>> {
      * Define a new transition. When condition is true changes the graph to
      * target.
      */
-    public final StateDefinitionBuilder<T> transition(
+    public StateDefinitionBuilder<T> transition(
             Condition<T> condition,
-            GraphRef target) {
-        transitions.add(new Transition<>(condition, new Target(target), null));
+            GraphBuilder<T> target) {
+        transitions.add(new Transition<>(
+                condition,
+                new Target(target.graphRef()),
+                null));
         return this;
     }
 
     /** Builds the StateDefinition from this builder. */
-    final StateDefinition<T> build() {
+    StateDefinition<T> build() {
         return new StateDefinition<T>(onEnters, onExits, transitions);
     }
 }
