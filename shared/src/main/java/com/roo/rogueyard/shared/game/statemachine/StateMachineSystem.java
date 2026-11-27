@@ -7,7 +7,7 @@ import com.roo.rogueyard.shared.engine.ecs.Entity;
 /**
  * Updates all state machine components of type C.
  */
-public class StateMachineSystem<C extends StateMachineComponent<T>, T extends StateMachineContext>
+public class StateMachineSystem<C extends StateMachineComponent<T>, T extends StateMachineContext<T>>
         extends ECSSystemSingle<C> {
     public StateMachineSystem(Class<C> componentType) {
         super(componentType);
@@ -15,10 +15,10 @@ public class StateMachineSystem<C extends StateMachineComponent<T>, T extends St
 
     @Override
     protected void updateSingle(Entity entity, C component) {
-        @SuppressWarnings("unchecked")
-        GraphBundle<T> graphBundle = (GraphBundle<T>) GraphBundleManager
+        GraphBundle<T> graphBundle = GraphBundleManager
                 .getInstance().get(component.ctx.graphBundleRef());
 
-        graphBundle.update(component.ctx, ECSManager.getInstance().getDeltaTime());
+        graphBundle.update(
+                component.ctx, ECSManager.getInstance().getDeltaTime());
     }
 }

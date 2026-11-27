@@ -7,7 +7,7 @@ import com.roo.rogueyard.shared.game.statemachine.Target.Type;
 /**
  * Represents a set of states and transitions between them.
  */
-class Graph<T extends StateMachineContext> {
+class Graph<T extends StateMachineContext<T>> {
     private final List<StateDefinition<T>> stateDefinitions;
     private final List<Transition<T>> fromAnyTransitions;
     private final State initialState;
@@ -43,10 +43,6 @@ class Graph<T extends StateMachineContext> {
 
     /** Update the given context according to this graphs transitions. */
     void update(T ctx) {
-        if (ctx.state() == null) {
-            ctx.setState(initialState());
-        }
-
         var transition = nextTransition(ctx);
         if (transition == null) {
             return;
@@ -69,6 +65,11 @@ class Graph<T extends StateMachineContext> {
             Action.executeAll(get(targetState).onEnter(), ctx);
         } else {
             ctx.setGraphRef(transition.target().asGraphRef());
+
+            var graphBundle = GraphBundleManager.getInstance()
+                    .get(ctx.graphBundleRef());
+            var targetGraph = graphBundle.get(ctx.graphRef());
+            ctx.setState(targetGraph.initialState());
         }
     }
 

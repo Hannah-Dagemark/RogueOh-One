@@ -8,7 +8,7 @@ import com.roo.rogueyard.shared.game.statemachine.Target.Type;
 /**
  * Used to define a graph bundle.
  */
-public final class GraphBundleBuilder<T extends StateMachineContext> {
+public final class GraphBundleBuilder<T extends StateMachineContext<T>> {
     private final List<GraphBuilder<T>> graphs = new ArrayList<>();
     private final List<Transition<T>> fromAnyTransitions = new ArrayList<>();
     private GraphRef initialGraph;
@@ -40,7 +40,8 @@ public final class GraphBundleBuilder<T extends StateMachineContext> {
             Condition<T> condition,
             GraphRef target,
             Action<T> onTrigger) {
-        fromAnyTransitions.add(new Transition<>(condition, new Target(target), onTrigger));
+        fromAnyTransitions.add(
+                new Transition<>(condition, new Target(target), onTrigger));
         return this;
     }
 
@@ -59,7 +60,7 @@ public final class GraphBundleBuilder<T extends StateMachineContext> {
     /** Sets the initial graph for the graph bundle. */
     public GraphBundleBuilder<T> initial(GraphRef graphRef) {
         if (initialGraph != null) {
-            throw new RuntimeException("Cannot set initial graph twice.");
+            throw new IllegalStateException("Cannot set initial graph twice.");
         }
         initialGraph = graphRef;
         return this;
@@ -70,9 +71,9 @@ public final class GraphBundleBuilder<T extends StateMachineContext> {
      * returns a reference to it. The ctxType is the type of the context
      * this builder is parameterized as.
      */
-    public GraphBundleRef build(Class<T> ctxType) {
+    public GraphBundleRef<T> build(Class<T> ctxType) {
         if (initialGraph == null) {
-            throw new RuntimeException("Initial graph not set.");
+            throw new IllegalStateException("Initial graph not set.");
         }
 
         validateFromAnyTransitions();

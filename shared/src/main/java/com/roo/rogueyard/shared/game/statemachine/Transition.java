@@ -4,7 +4,7 @@ package com.roo.rogueyard.shared.game.statemachine;
  * Represents a transition to a target state within a graph or to a target
  * graph within a graph bundle.
  */
-public class Transition<T extends StateMachineContext> {
+public class Transition<T extends StateMachineContext<T>> {
     private final Condition<T> condition;
     private final Target target;
     private final Action<T> action;

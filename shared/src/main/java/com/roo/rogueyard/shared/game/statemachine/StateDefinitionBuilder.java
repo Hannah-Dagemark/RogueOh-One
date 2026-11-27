@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Used to define states in a Graph.
  */
-public final class StateDefinitionBuilder<T extends StateMachineContext> {
+public final class StateDefinitionBuilder<T extends StateMachineContext<T>> {
     private final List<Action<T>> onEnters = new ArrayList<>();
     private final List<Action<T>> onExits = new ArrayList<>();
     private final List<Transition<T>> transitions = new ArrayList<>();

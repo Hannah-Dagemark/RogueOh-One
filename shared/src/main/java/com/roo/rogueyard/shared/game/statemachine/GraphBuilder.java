@@ -8,7 +8,7 @@ import com.roo.rogueyard.shared.game.statemachine.Target.Type;
 /**
  * Used to define a graph.
  */
-public final class GraphBuilder<T extends StateMachineContext> {
+public final class GraphBuilder<T extends StateMachineContext<T>> {
     private final List<StateDefinitionBuilder<T>> stateDefinitions = new ArrayList<>();
     private final List<Transition<T>> fromAnyTransitions = new ArrayList<>();
     private State initialState;
@@ -37,9 +37,23 @@ public final class GraphBuilder<T extends StateMachineContext> {
      */
     public GraphBuilder<T> transitionFromAny(
             Condition<T> condition,
-            Target target,
+            State target,
             Action<T> onTrigger) {
-        fromAnyTransitions.add(new Transition<>(condition, target, onTrigger));
+        fromAnyTransitions.add(
+                new Transition<>(condition, new Target(target), onTrigger));
+        return this;
+    }
+
+    /**
+     * Adds a transition that can trigger from any state. When the condition is
+     * true the graph changes to the target and the onTrigger action is executed.
+     */
+    public GraphBuilder<T> transitionFromAny(
+            Condition<T> condition,
+            GraphRef target,
+            Action<T> onTrigger) {
+        fromAnyTransitions.add(
+                new Transition<>(condition, new Target(target), onTrigger));
         return this;
     }
 
@@ -49,15 +63,28 @@ public final class GraphBuilder<T extends StateMachineContext> {
      */
     public GraphBuilder<T> transitionFromAny(
             Condition<T> condition,
-            Target target) {
-        fromAnyTransitions.add(new Transition<>(condition, target, null));
+            State target) {
+        fromAnyTransitions.add(
+                new Transition<>(condition, new Target(target), null));
+        return this;
+    }
+
+    /**
+     * Adds a transition that can trigger from any state. When the condition is
+     * true the graph changes to the target.
+     */
+    public GraphBuilder<T> transitionFromAny(
+            Condition<T> condition,
+            GraphRef target) {
+        fromAnyTransitions.add(
+                new Transition<>(condition, new Target(target), null));
         return this;
     }
 
     /** Sets the initial state for the graph. */
     public GraphBuilder<T> initial(State state) {
         if (initialState != null) {
-            throw new RuntimeException("Cannot set initial state twice.");
+            throw new IllegalStateException("Cannot set initial state twice.");
         }
         initialState = state;
         return this;
@@ -66,7 +93,7 @@ public final class GraphBuilder<T extends StateMachineContext> {
     /** Creates and returns a new graph built from this builder. */
     Graph<T> build() {
         if (initialState == null) {
-            throw new RuntimeException("Initial state not set.");
+            throw new IllegalStateException("Initial state not set.");
         }
 
         validateTransitions(fromAnyTransitions);

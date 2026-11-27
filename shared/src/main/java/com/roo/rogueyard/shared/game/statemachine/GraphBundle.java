@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Represents a bundle of graphs that can have transitions between them.
  */
-class GraphBundle<T extends StateMachineContext> {
+class GraphBundle<T extends StateMachineContext<T>> {
     private final List<Graph<T>> graphs;
     private final List<Transition<T>> fromAnyTransitions;
     private final GraphRef initialGraph;
@@ -47,13 +47,22 @@ class GraphBundle<T extends StateMachineContext> {
 
         Graph<T> graph = get(ctx.graphRef());
 
-        var transition = nextTransition(ctx);
+        if (ctx.state() == null) {
+            ctx.setState(graph.initialState());
+        }
+
+        var transition = nextFromAnyTransition(ctx);
         if (transition == null) {
             graph.update(ctx);
             return;
         }
 
-        var from = graph.get(ctx.state());
+        applyFromAnyTransition(ctx, transition, graph);
+    }
+
+    /** Applies a from any transition. */
+    private void applyFromAnyTransition(T ctx, Transition<T> transition, Graph<T> fromGraph) {
+        var from = fromGraph.get(ctx.state());
         Action.executeAll(from.onExit(), ctx);
 
         if (transition.action() != null) {
@@ -63,13 +72,13 @@ class GraphBundle<T extends StateMachineContext> {
         ctx.setTimeInState(0);
 
         ctx.setGraphRef(transition.target().asGraphRef());
+
+        var targetGraph = get(ctx.graphRef());
+        ctx.setState(targetGraph.initialState());
     }
 
-    /**
-     * The next transition valid for the given context. Only includes from any
-     * transitions.
-     */
-    private Transition<T> nextTransition(T ctx) {
+    /** The next from any transition valid for the given context. */
+    private Transition<T> nextFromAnyTransition(T ctx) {
         for (Transition<T> transition : fromAnyTransitions()) {
             if (transition.matches(ctx)) {
                 return transition;

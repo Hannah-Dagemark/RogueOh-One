@@ -6,11 +6,11 @@ import java.util.List;
  * Represents an action that can be executed given a StateMachineContext.
  */
 @FunctionalInterface
-public interface Action<T extends StateMachineContext> {
+public interface Action<T extends StateMachineContext<T>> {
     void execute(T ctx);
 
     /** Execute all given actions. */
-    static <T extends StateMachineContext> void executeAll(List<Action<T>> actions, T ctx) {
+    static <T extends StateMachineContext<T>> void executeAll(List<Action<T>> actions, T ctx) {
         for (var action : actions) {
             action.execute(ctx);
         }

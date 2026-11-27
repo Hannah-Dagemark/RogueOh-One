@@ -4,7 +4,7 @@ package com.roo.rogueyard.shared.game.statemachine;
  * Represents a condition.
  */
 @FunctionalInterface
-public interface Condition<T extends StateMachineContext> {
+public interface Condition<T extends StateMachineContext<T>> {
     /** If the condition is true. */
     boolean test(T ctx);
 
