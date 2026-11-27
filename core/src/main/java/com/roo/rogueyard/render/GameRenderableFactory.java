@@ -3,6 +3,7 @@ package com.roo.rogueyard.render;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.roo.rogueyard.Assets;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
@@ -14,13 +15,8 @@ import java.util.Map;
  * Creates GameRenderable objects.
  */
 public final class GameRenderableFactory {
-    private final Map<String, Texture> textures = new HashMap<>();
 
     public GameRenderableFactory() {
-    }
-
-    private Texture loadTexture(String key) {
-        return new Texture(Gdx.files.internal("sprites/" + key + ".png"));
     }
 
     /**
@@ -41,13 +37,13 @@ public final class GameRenderableFactory {
     }
 
     private GameRenderable createPlayer(VisualComponent visual, Entity entity) {
-        var sprite = new Sprite(loadTexture("robo-guy"));
+        var sprite = new Sprite(Assets.getTexture("robo-guy.png"));
         sprite.setAlpha(visual.visible ? 1 : 0);
         return new GameRenderableEntity(sprite, entity);
     }
 
     private GameRenderable createEnemy(VisualComponent visual, Entity entity) {
-        var sprite = new Sprite(loadTexture("bulker"));
+        var sprite = new Sprite(Assets.getTexture("bulker.png"));
         return new GameRenderableEntity(sprite, entity);
     }
 
