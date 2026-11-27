@@ -48,15 +48,7 @@ public final class GameRenderableFactory {
     }
 
     private GameRenderable createDescendPoint(VisualComponent visual, Entity entity) {
-        var sprite = new Sprite(loadTexture("descend-point"));
+        var sprite = new Sprite(Assets.getTexture("descend-point.png"));
         return new GameRenderableEntity(sprite, entity);
-    }
-
-    /**
-     * Free up the resources taken up by this class.
-     */
-    public void dispose() {
-        textures.values().forEach(Texture::dispose);
-        textures.clear();
     }
 }
