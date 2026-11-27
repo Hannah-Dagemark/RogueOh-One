@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.engine.utils.seed.PseudoSeed;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
@@ -27,8 +28,10 @@ public final class GameModel {
 
     private Entity[] enemies;
     private final PlayerEntity player;
+    private final PseudoSeed seed;
 
     public GameModel() {
+        seed = new PseudoSeed(12345);
         initComponents();
         initSystems();
         /*initEntities();*/
@@ -77,7 +80,7 @@ public final class GameModel {
     }
 
     private void initWorld() {
-        WorldManager.getInstance().setSeed(123456789);
+        WorldManager.getInstance().setSeed(seed);
         WorldManager.getInstance().generateNewMap();
         WorldManager.getInstance().initializeMap();
     }

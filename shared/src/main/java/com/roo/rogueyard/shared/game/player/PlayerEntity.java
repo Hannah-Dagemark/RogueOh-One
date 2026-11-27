@@ -2,14 +2,11 @@ package com.roo.rogueyard.shared.game.player;
 import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.DirectionType;
-import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityComponent;
 import com.roo.rogueyard.shared.game.physics.VelocityFactorComponent;
-import com.roo.rogueyard.shared.game.world.DescendPointEntity;
+import com.roo.rogueyard.shared.game.world.entities.DescendPointEntity;
 import com.roo.rogueyard.shared.game.world.WorldManager;
-
-import java.util.Arrays;
 
 /**
  * Core Player variant of the Entity class. This class holds the functionality unique to player characters, currently being controlled by users.
