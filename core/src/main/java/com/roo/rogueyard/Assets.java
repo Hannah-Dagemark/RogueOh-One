@@ -1,27 +1,30 @@
 package com.roo.rogueyard;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-
-// for fonts
-// import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-// import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-// import com.badlogic.gdx.graphics.g2d.BitmapFont;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-// import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader.FreeTypeFontGeneratorParameters;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
 public final class Assets {
     private static Assets instance;
     private final AssetManager gdxAssets = new AssetManager();
 
     // for fonts
-    // private static FileHandleResolver resolver = new
-    // InternalFileHandleResolver();
+    private FileHandleResolver resolver = new InternalFileHandleResolver();
 
     // valid extensions for assets
     private static final String[] TEXTURE_EXT = { ".png", ".jpg" };
@@ -33,12 +36,22 @@ public final class Assets {
     private static String MUSIC_DIR = "music/";
     private static String FONT_DIR = "fonts/";
 
+    // which sizes a font should generate
+    public enum FontSize { // NOTE: sizes subject to change
+        SMALL(12),
+        MEDIUM(18),
+        BIG(36);
+
+        private int pxSize;
+        private FontSize(int size) {
+            this.pxSize =  size;
+        }
+    }
+
     private Assets() {
         // setup font loading
-        // gdxAssets.setLoader(FreeTypeFontGenerator.class, new
-        // FreeTypeFontGeneratorLoader(resolver));
-        // gdxAssets.setLoader(BitmapFont.class, ".ttf", new
-        // FreetypeFontLoader(resolver));
+        gdxAssets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        gdxAssets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         loadAssets();
     }
@@ -61,6 +74,12 @@ public final class Assets {
         return false;
     }
 
+    public static String baseNameNoExtension(String rawPath) {
+        String fileName = Path.of(rawPath).getFileName().toString();
+        String baseName = fileName.substring(0, fileName.indexOf("."));
+        return baseName;
+    }
+
     /**
      * loads all assets located in [root]/assets/*"
      */
@@ -79,7 +98,12 @@ public final class Assets {
             } else if (path.startsWith(MUSIC_DIR) && endsWithAny(path, AUDIO_EXT)) {
                 gdxAssets.load(path, Music.class);
             } else if (path.startsWith(FONT_DIR) && endsWithAny(path, FONT_EXT)) {
-                // TODO: fonts
+                for (FontSize font : FontSize.values()) {
+                    FreeTypeFontLoaderParameter fontParams = new FreeTypeFontLoaderParameter();
+                    fontParams.fontFileName = path; // the file that exists in assets/fonts/
+                    fontParams.fontParameters.size = font.pxSize;
+                    gdxAssets.load(baseNameNoExtension(path) + "_" + font.pxSize + ".ttf", BitmapFont.class, fontParams);
+                }
             } else {
                 System.out.println("[ASSETS : warning] : unsupported asset : \"" + path + "\"");
             }
@@ -102,6 +126,11 @@ public final class Assets {
     public static Music getMusic(String file) {
         String fullPath = MUSIC_DIR + file;
         return get(fullPath, Music.class);
+    }
+
+    public static BitmapFont getFont(String file, FontSize size) {
+        String internalFile = baseNameNoExtension(file) + "_" + size.pxSize + ".ttf";
+        return get(internalFile, BitmapFont.class);
     }
 
     private static <T> T get(String fullPath, Class<T> type) {
