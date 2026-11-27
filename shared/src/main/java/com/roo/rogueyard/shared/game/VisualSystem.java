@@ -37,7 +37,7 @@ public class VisualSystem extends ECSSystemSingle<VisualComponent>
     }
 
     @Override
-    public void onComponentRemoved(Entity entity, Class<?> componentType) {
+    public void onComponentRemoved(Entity entity, Class<?> componentType, Object component) {
         if (componentType == VisualComponent.class) {
             eventBus.external.publish(new DestroyVisualEvent(entity));
         }

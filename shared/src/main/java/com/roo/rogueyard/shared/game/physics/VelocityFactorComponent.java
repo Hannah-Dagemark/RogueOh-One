@@ -5,7 +5,6 @@ import com.roo.rogueyard.shared.engine.ecs.ComponentWithRequirements;
 import com.roo.rogueyard.shared.engine.ecs.RequiredComponentsBuilder;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 

@@ -12,9 +12,10 @@ import com.roo.rogueyard.shared.engine.ecs.RequiredComponentsBuilder;
  */
 public class PhysicsBodyComponent implements ComponentWithRequirements {
     public Body body;
+    public final BodyBlueprint bodyBlueprint;
 
-    public PhysicsBodyComponent(Body body) {
-        this.body = body;
+    public PhysicsBodyComponent(BodyBlueprint bodyBlueprint) {
+        this.bodyBlueprint = bodyBlueprint;
     }
 
     @Override

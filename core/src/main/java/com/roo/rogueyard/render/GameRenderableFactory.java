@@ -1,15 +1,10 @@
 package com.roo.rogueyard.render;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.roo.rogueyard.Assets;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.VisualType;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Creates GameRenderable objects.
