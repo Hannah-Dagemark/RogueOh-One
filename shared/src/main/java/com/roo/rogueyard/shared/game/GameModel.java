@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.roo.rogueyard.shared.engine.ecs.ComponentManager;
 import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
+import com.roo.rogueyard.shared.game.combat.BaseDamageComponent;
+import com.roo.rogueyard.shared.game.combat.WeaponComponent;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
@@ -17,6 +19,7 @@ import com.roo.rogueyard.shared.game.physics.VelocitySystem;
 import com.roo.rogueyard.shared.game.player.PlayerEntity;
 import com.roo.rogueyard.shared.game.player.PlayerFactory;
 import com.roo.rogueyard.shared.game.player.PlayerInputProcessor;
+import com.roo.rogueyard.shared.game.statemachine.StateMachineSystem;
 
 /**
  * Holds the game state.
@@ -39,7 +42,8 @@ public final class GameModel {
     }
 
     /**
-     * Initialise all non-player entities. At the moment used for demo, this will be moved to layer-specific
+     * Initialise all non-player entities. At the moment used for demo, this will be
+     * moved to layer-specific
      * functionality later on.
      */
     /* TODO: Move to Layer's concern once layer is implemented. */
@@ -57,6 +61,7 @@ public final class GameModel {
      */
     private void initComponents() {
         ComponentManager.getInstance().registerComponent(TransformComponent.class);
+        ComponentManager.getInstance().registerComponent(BaseDamageComponent.class);
     }
 
     /**
@@ -64,14 +69,15 @@ public final class GameModel {
      */
     private void initSystems() {
         // Order here is the order systems are executed in.
+        new StateMachineSystem<>(WeaponComponent.class);
         new ResistanceSystem();
         new HealthSystem();
         new PhysicsSystem();
         new TrackingBehaviourSystem();
         new HuntBehaviourSystem();
-        new VisualSystem(eventBus);
         new VelocitySystem();
         new VelocityFactorSystem();
+        new VisualSystem(eventBus);
     }
 
     /**

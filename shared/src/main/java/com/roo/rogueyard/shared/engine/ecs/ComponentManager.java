@@ -53,7 +53,9 @@ public final class ComponentManager {
     public <T extends Component> Map<Entity, T> getComponentsMap(Class<T> componentType) {
         var components = componentMaps.get(componentType);
         if (components == null) {
-            throw new RuntimeException("componentType is not registered as a component.");
+            throw new RuntimeException(
+                    "Component type %s is not registered as a component.".formatted(
+                            componentType.getName()));
         }
         return (Map<Entity, T>) components;
     }
