@@ -31,12 +31,9 @@ public final class GameModel {
     private Entity[] enemies;
     private final PlayerEntity player;
 
-    private WeaponFactory weaponFactory;
-
     public GameModel() {
         initComponents();
         initSystems();
-        initFactories();
         initEntities();
 
         player = PlayerFactory.createPlayer();
@@ -82,11 +79,6 @@ public final class GameModel {
         new VelocitySystem();
         new VelocityFactorSystem();
         new VisualSystem(eventBus);
-    }
-
-    /** Creates all factories. */
-    private void initFactories() {
-        weaponFactory = new WeaponFactory();
     }
 
     /**
