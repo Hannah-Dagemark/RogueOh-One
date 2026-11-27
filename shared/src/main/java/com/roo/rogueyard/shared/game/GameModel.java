@@ -7,7 +7,6 @@ import com.roo.rogueyard.shared.engine.ecs.ECSManager;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.game.combat.BaseDamageComponent;
 import com.roo.rogueyard.shared.game.combat.WeaponComponent;
-import com.roo.rogueyard.shared.game.combat.WeaponFactory;
 import com.roo.rogueyard.shared.game.event.CompositeEventBus;
 import com.roo.rogueyard.shared.game.event.GameEventBus;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
