@@ -3,8 +3,9 @@ package com.roo.rogueyard.shared.game.world;
 import com.badlogic.gdx.math.Vector2;
 import com.roo.rogueyard.shared.engine.ecs.Entity;
 import com.roo.rogueyard.shared.engine.ecs.EntityManager;
-import com.roo.rogueyard.shared.engine.utils.PseudoSeed;
+import com.roo.rogueyard.shared.engine.utils.seed.PseudoSeed;
 import com.roo.rogueyard.shared.engine.utils.SimplexNoise;
+import com.roo.rogueyard.shared.engine.utils.seed.RandomRef;
 import com.roo.rogueyard.shared.game.VisualComponent;
 import com.roo.rogueyard.shared.game.npc.EnemyNpcFactory;
 import com.roo.rogueyard.shared.game.physics.TransformComponent;
@@ -20,18 +21,21 @@ public class WalkableLayer {
     private final int difficultyFactor;
     private final double layoutSeed;
     private final double[][] standardScaleMapLayout;
+    private final RandomRef enemyRandomizer;
 
-    public WalkableLayer(LayeredMap map, PseudoSeed seed, int difficultyFactor) {
+    public WalkableLayer(LayeredMap map, PseudoSeed seed, int difficultyFactor, RandomRef generationRandomizer, RandomRef enemyRandomizer) {
         this.seed = seed;
-        this.layoutSeed = seed.layerGenerationRandomizer.nextDouble();
+
+        this.layoutSeed = seed.getRandom(generationRandomizer).nextDouble();
         this.standardScaleMapLayout = getMapLayout(1);
         this.difficultyFactor = difficultyFactor;
-        this.descendPoints = generateDescentPoints(seed.layerGenerationRandomizer, map);
+        this.descendPoints = generateDescentPoints(seed.getRandom(generationRandomizer), map);
+        this.enemyRandomizer = enemyRandomizer;
         this.map = map;
     }
 
     public void activateLayer() {
-        enemies = generateEnemies(this.seed.enemySpawnRandomizer, this.difficultyFactor);
+        enemies = generateEnemies(this.seed.getRandom(enemyRandomizer), this.difficultyFactor);
         for (DescendPointEntity descendPoint : descendPoints) {
             descendPoint.getComponent(VisualComponent.class).visible = true;
         }

@@ -1,6 +1,6 @@
 package com.roo.rogueyard.shared.game.world;
 
-import com.roo.rogueyard.shared.engine.utils.PseudoSeed;
+import com.roo.rogueyard.shared.engine.utils.seed.PseudoSeed;
 
 public final class WorldManager {
     private static final WorldManager instance = new WorldManager();
