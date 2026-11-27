@@ -40,6 +40,7 @@ public class WeaponFactory {
         var idle = main.newState();
         var swing = main.newState();
 
+        /* TODO: Create a real weapon. */
         idle.transition(WeaponConditions.cooldown(), swing,
                 ctx -> System.out.println("-> Shoot"));
 

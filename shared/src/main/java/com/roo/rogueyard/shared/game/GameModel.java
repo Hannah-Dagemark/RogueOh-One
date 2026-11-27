@@ -40,7 +40,6 @@ public final class GameModel {
         initEntities();
 
         player = PlayerFactory.createPlayer();
-        weaponFactory.createBasicGun();
 
         /* Must happen AFTER player creation */
         initInput(player);
