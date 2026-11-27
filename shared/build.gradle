@@ -10,3 +10,10 @@ dependencies {
 test {
   useJUnitPlatform()
 }
+
+testlogger {
+  theme 'standard'
+  showPassed true
+  showSkipped true
+  showFailed true
+}

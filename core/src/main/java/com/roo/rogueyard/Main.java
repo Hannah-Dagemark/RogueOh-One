@@ -10,6 +10,7 @@ import com.roo.rogueyard.screens.MainMenu;
 public class Main extends Game {
     @Override
     public void create() {
+        Assets.init();
         setScreen(new MainMenu(this));
     }
 }

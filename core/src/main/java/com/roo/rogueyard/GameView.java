@@ -62,7 +62,6 @@ public class GameView {
      * Free up the resources taken up by this class.
      */
     public void dispose() {
-        renderableFactory.dispose();
         batch.dispose();
     }
 }
